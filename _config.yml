@@ -1,10 +1,10 @@
 # Setup
 title: Dark Poole
-url: http://jiniljeil.github.io/dark-poole 
+url: http://jiniljeil.github.io/ 
 paginate: 1
-baseurl: "/dark-poole"
+baseurl: ""
 permalink: pretty
-paginate_path: "/baseurl/page:num/"
+# paginate_path: "/baseurl/page:num/"
 
 # Gems
 plugins:
