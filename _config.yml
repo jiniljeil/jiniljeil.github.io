@@ -1,0 +1,74 @@
+title: ^w3b$
+author: ^w3b$
+email: jiniljeil1@gmail.com
+description: > # this means to ignore newlines until "show_exerpts:"
+  Interest: Web Exploitation. <br>
+  Activities: <a href="https://dreamhack.io/users/31718">DreamHack</a>, <a href="https://www.acmicpc.net/user/hello_world1">Baekjoon</a> <br>
+  I occasionally blogs about web security, tricks, and development.   
+
+show_excerpts: false # set to true to show excerpts on the homepage
+
+paginate: 5
+paginate_path: "/blog/:num/"
+
+tag_permalink_style: pretty
+tag_page_layout: tag_page
+tag_page_dir: tag
+
+# jekyll-dash date format
+# refer to http://shopify.github.io/liquid/filters/date/ if you want to customize this
+dash:
+  # the way how dates should be displayed
+  date_format: "%b %-d, %Y"
+
+  # (optional) discqus comment configuration
+  disqus:
+    shortname: bitbrain-github-io
+
+  # generate social links in footer
+  # supported colors: green, red, orange, blue, cyan, pink, teal, yellow, indigo, purple
+  social_links:
+    - url: /ctf
+      icon: flag 
+      color: cyan
+    - url: /archive
+      icon: file
+      color: blue
+    - url: /about
+      icon: user
+      color: red
+    - url: https://github.com/jiniljeil
+      icon: github-square
+      color: purple
+
+  # wether the author box should be displayed
+  show_author: true
+
+  # the animation speed of the scroll-in effect
+  animation_speed: 50
+
+  # wether to enable Right-to-Left support or not
+  rtl: false
+
+  # Replaces the default avatar provider (gravatar)
+  #avatar_source: github
+  #github_username: bitbrain
+  #avatar_source: local
+  #avatar_path: /assets/avatar.png
+
+plugins:
+ - jekyll-feed
+ - jekyll-seo-tag
+ - jekyll-paginate
+ - liquid-md5
+ - jekyll/tagging
+
+nav:
+  - title: About
+    url: /about
+  - title: Archive
+    url: /archive
+  - title: CTF
+    url: /ctf
+
+theme: minima

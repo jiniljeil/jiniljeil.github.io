@@ -1,0 +1,18 @@
+<div class="site-header">
+  <div class="wrapper">
+    <a class="site-title" rel="author" href="{{ "/" | relative_url }}">{{ site.title | escape }}<b class="command_prompt"></b><b class="blinking_cursor">_</b></a>
+    <span class="social_links">
+        {% for link in site.dash.social_links %}
+        {% if link.fa == true %}
+          <a class="color-{{ link.color }}-hover" href="{{ link.url }}"><i class="fa fa-{{ link.icon }}"></i></a>
+        {% else %}
+          {% if link.icon == "user" or link.icon == "file" %}
+            <a class="color-{{ link.color }}-hover" href="{{ link.url }}"><i class="fab fa-{{ link.icon }} fa-sm" style="position: relative; bottom: 1.1px;"></i></a>
+          {% else %}
+            <a class="color-{{ link.color }}-hover" href="{{ link.url }}"><i class="fab fa-{{ link.icon }}"></i></a>
+          {% endif %}
+        {% endif %}
+        {% endfor %}
+    </span>
+  </div>
+</div>
