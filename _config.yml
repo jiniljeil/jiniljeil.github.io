@@ -70,7 +70,5 @@ nav:
     url: /archive
   - title: CTF
     url: /ctf
-  - title: Test
-    url: /test
-    
+
 theme: minima
