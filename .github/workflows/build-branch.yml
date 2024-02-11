@@ -28,4 +28,10 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
     - name: 🧪 Run tests 
-      run: gem install bundler:2.2.34 && bundle _2.2.34_ add webrick && bundle install && bundle exec rake
+      run: gem install bundler:2.2.34
+    - name: Bundle add webrick
+      run: bundle _2.2.34_ add webrick
+    - name: Bundle Installation
+      run: bundle install
+    - name: Bundle Exec
+      run: bundle exec rake
