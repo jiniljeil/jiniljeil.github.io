@@ -27,11 +27,7 @@ jobs:
     - uses:  helaili/jekyll-action@v2
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-    - name: 🧪 Run tests 
-      run: gem install bundler:2.2.34
-    - name: Bundle add webrick
-      run: bundle _2.2.34_ add webrick
-    - name: Bundle Installation
-      run: bundle install
-    - name: Bundle Exec
-      run: bundle exec rake
+    - run: gem install bundler:2.2.34
+    - run: bundle _2.2.34_ add webrick
+    - run: bundle install
+    - run: bundle exec rake
