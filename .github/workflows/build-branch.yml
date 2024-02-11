@@ -17,6 +17,8 @@ jobs:
         ruby-version: ['2.6', '2.7', '3.0']
 
     steps:
+    - run: gem install bundler:2.2.34
+    - run: bundle _2.2.34_ add webrick 
     - uses: actions/checkout@v2
     - name: 💎 Set up Ruby
       uses: ruby/setup-ruby@473e4d8fe5dd94ee328fdfca9f8c9c7afc9dae5e
@@ -28,8 +30,7 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
     # - name: 🧪 Run tests
-    - run: gem install bundler:2.2.34
-    - run: bundle _2.2.34_ add webrick
+    
     - run: bundle lock --add-platform x86_64-linux
     - run: bundle install
     - run: bundle exec rake
