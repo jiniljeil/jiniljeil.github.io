@@ -18,7 +18,7 @@ category: ctf
 ## Writeup    
 
 - <a href="#denied">denied</a>     
-<!-- - <a href="#agile-rut">agile-rut</a>      -->
+- <a href="#agile-rut">agile-rut</a>     
 - <a href="#one-shot">one-shot</a>      
 - <a href="#sculpture">sculpture</a>    
           
@@ -82,13 +82,35 @@ X-Powered-By: Express
        
 ### Flag     
 amateursCTF{s0_m@ny_0ptions...}
-
-<!-- # agile-rut       
-      
-311 solves / 173 points    -->
            
+<a id="agile-rut"></a>  
+                        
+# agile-rut       
+      
+311 solves / 173 points   
+           
+세상이 날 억까한 문제 :skull::skull::skull:     
 
+홈페이지에 접속하면 agile-rut.otf 폰트가 적용된 것을 볼 수 있다.      
+        
+```otf
+a.m.a.t.e.u.r.s.C.T.F.braceleft.zero.k.underscore.b.u.t.underscore.one.underscore.d.o.n.t.underscore.l.i.k.e.underscore.t.h.e.underscore.j.b.m.o.n.zero.underscore.equal.equal.equal.braceright
+```        
+       
+agile-rut.otf 파일의 바이너리를 보니 위와 같은 문구가 있어 키워드를 문자로 표현하니 아래와 같이 플래그가 나왔다.     
+               
+amateursCTF{0k_but_1_dont_like_the_jbmon0_===}       
 
+제출을 했더니 답이 틀렸다고 한다... (?) 결국 대회 끝날 때까지 못풀고 공식 풀이를 봤더니..     
+모든 문자를 소문자로 써야한다고 CTF가 아닌 ctf로 변경한게 답이라고 한다...
+           
+Flag Format이 분명 `amateursCTF{}`라고 되어있었는데 ... 어이가 없는 문제였다.          
+               
+### Flag
+amateursctf{0k_but_1_dont_like_the_jbmon0_===}          
+                           
+<a id="one-shot"></a>     
+             
 # one-shot   
 
 282 solves / 184 points   
@@ -162,7 +184,9 @@ print(r.text)
        
 ### Flag            
 amateursCTF{go_union_select_a_life}       
-
+             
+<a id="sculpture"></a>  
+                             
 # sculpture        
               
 95 solves / 302 points 
