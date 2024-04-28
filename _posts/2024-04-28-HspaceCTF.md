@@ -12,9 +12,9 @@ category: ctf
 **2024-04-28 10:00 ~ 22:00**
 
 ## 대회 결과   
-<img src="/assets/images/ctf/2024/hspace/scoreboard.png" width="700px">      
+<img src="/assets/images/ctf/2024/hspace/scoreboard.jpg" width="700px">      
       
-<img src="/assets/images/ctf/2024/hspace/web.JPG" width="700px">      
+<img src="/assets/images/ctf/2024/hspace/web.jpg" width="700px">      
       
 ## Writeup   
    
@@ -53,7 +53,7 @@ def execute_command_route():
     last_execution_time = current_time
     return result
 ```
-POST 요청을 통해 `command` 값을 전달하면, `execute_command()` 함수에서 명령을 실행합니다.    
+POST 요청을 통해 `command` 값을 전달하면, `execute_command()` 함수에서 명령을 실행한다.        
       
 ```python
 blacklist = set('flag/')
@@ -63,9 +63,9 @@ def is_valid_command(command):
         return False
     return True
 ```      
-대신, `is_valid_command()` 함수로 인해 `'f','l','a','g','/'` 문자를 사용할 수 없습니다.       
+대신, `is_valid_command()` 함수로 인해 `'f','l','a','g','/'` 문자를 사용할 수 없다.       
       
-`more *` 명령을 실행히면 위 문자를 사용하지 않고 해당 디렉터리에 파일 내용을 볼 수 있습니다.            
+`more *` 명령을 실행히면 위 문자를 사용하지 않고 해당 디렉터리에 파일 내용을 볼 수 있다.            
        
 ## Exploit Code      
          
@@ -82,7 +82,7 @@ r = requests.post(
 print(r.text)
 ```       
        
-<img src="/flagreading/flag.jpg" width="700px"/>     
+<img src="/assets/images/ctf/2024/hspace/flagreading/flag.jpg" width="700px"/>     
                
 ### Flag       
 hspace{catflag!!}
@@ -106,7 +106,7 @@ def admin():
     else:
         return "Hello admin here is "+FLAG
 ```
-플래그를 획득하기 위해서 `/admin` 경로에 접근해야합니다.       
+플래그를 획득하기 위해서 `/admin` 경로에 접근해야한다.       
              
 ```python
 @app.route('/login', methods=['GET', 'POST'])
@@ -127,9 +127,8 @@ def login():
             return render_template_string(f"{username} is wrong username or password")
     return render_template('login.html')
 ```   
-로그인에 실패할 경우, `render_template_string()` 함수를 통해 랜더링이 됩니다. 하지만, 해당 함수는 SSTI 취약점을 발생시킬 수 있습니다.   
-
-`username` 값으로 `{{config}}`를 입력하면, `config` 클래스에 저장된 `SECRET_KEY` 값을 알아낼 수 있습니다.     
+로그인에 실패할 경우, `render_template_string()` 함수를 통해 랜더링이 된다.       
+하지만, 해당 함수는 SSTI 취약점을 발생시킬 수 있어 `username` 값으로 `{{config}}`를 입력하면, `config` 클래스에 저장된 `SECRET_KEY` 값을 알아낼 수 있다.      
        
 ```python
 def generate_new_secret_key():
@@ -182,7 +181,7 @@ if "Hello" in r.text:
     exit()
 ```    
        
-<img src="/randomsecret/flag.jpg" width="700px"/>      
+<img src="/assets/images/ctf/2024/hspace/randomsecret/flag.jpg" width="700px"/>      
                 
 ### Flag      
 hspace{Th3_s3cret_key_Mu5t_nOT_Be_le4KeD!!!}    
