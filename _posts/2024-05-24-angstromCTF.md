@@ -915,8 +915,8 @@ XSS로 `admin_cookie` 쿠키 값을 얻어야하나 싶었지만, `httpOnly`, `s
 쿠키에 설정된 `sameSite: 'Lax'`는 동일한 사이트에 한에 쿠키를 공유한다.       
 XSS 취약점이 발생하는 동일한 사이트를 이용해 스크립트를 실행시켜주면 된다.                 
            
-Markdown: `https://markdown.web.actf.co/`
-wwwwwwwwaas: `https://wwwwwwwwaas.web.actf.co/`
+Markdown: `https://markdown.web.actf.co/`                
+wwwwwwwwaas: `https://wwwwwwwwaas.web.actf.co/`                       
       
 두 개의 URL은 Origin이 다르지만, Site는 `https://web.actf.co`로 동일하다.      
       
