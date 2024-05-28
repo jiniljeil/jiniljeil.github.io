@@ -128,7 +128,7 @@ def login():
     return render_template('login.html')
 ```   
 로그인에 실패할 경우, `render_template_string()` 함수를 통해 랜더링이 된다.       
-하지만, 해당 함수는 SSTI 취약점을 발생시킬 수 있어 `username` 값으로 `{{config}}`를 입력하면, `config` 클래스에 저장된 `SECRET_KEY` 값을 알아낼 수 있다.      
+하지만, 해당 함수는 SSTI 취약점을 발생시킬 수 있어 `username` 값으로 {% raw %}`{{config}}`{% endraw %}를 입력하면, `config` 클래스에 저장된 `SECRET_KEY` 값을 알아낼 수 있다.      
        
 ```python
 def generate_new_secret_key():
@@ -142,7 +142,7 @@ def update_secret_key():
 thread = threading.Thread(target=update_secret_key)
 thread.start()
 ```     
-대신, 0.5초 마다 새로운 `SECRET_KEY`를 생성하기 때문에 `{{config}}`를 통해 얻은 `SECRET_KEY`를 바로 사용해줘야 합니다.    
+대신, 0.5초 마다 새로운 `SECRET_KEY`를 생성하기 때문에 {% raw %}`{{config}}`{% endraw %}를 통해 얻은 `SECRET_KEY`를 바로 사용해줘야 합니다.    
      
 `SECRET_KEY`를 사용하여 `admin` 계정의 JWT 토큰을 생성해주면, `/admin` 경로에 접근이 가능하여 플래그를 획득할 수 있습니다.               
         
@@ -157,7 +157,7 @@ s = requests.session()
 r = requests.post(
         f"{url}/login", 
         data={
-            "username": "{{config}}",
+            "username": {% raw %}"{{config}}"{% endraw %},
             "password": "test"
         }
 )
