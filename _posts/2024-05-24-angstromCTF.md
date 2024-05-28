@@ -118,7 +118,7 @@ app.get('/view/:id', (_req, res) => {
       
 <img src="/assets/images/ctf/2024/angstrom/markdown/token.jpg" width="700px">     
          
-<img src="/assets/images/ctf/2024/angstrom/spinner/flag.jpg" width="700px">        
+<img src="/assets/images/ctf/2024/angstrom/markdown/flag.jpg" width="700px">        
       
 ### Flag       
 actf{b534186fa8b28780b1fcd1e95e2a2e2c}
