@@ -375,7 +375,7 @@ print(flag)
 ### Flag       
 actf{37619bbd0b81c257b70013fa1572f4ed}          
             
-<a id="pastebin"></a> 
+<a id="pastebin"></a>     
               
 # pastebin        
             
@@ -492,9 +492,11 @@ password-<function token_hex at 0x7b53781e8d22> 1797c26ee6c3786188292cc0b096a893
 password-<function token_hex at 0x7b53789a9714> 1797c28c6de75aa270ebeca5d23c13ba
 password-<function token_hex at 0x7b536f0a7e41> 1797c20bafbf9ef804afa75696d21b81
 ```
-위 방법대로 시도했는데 위와 같이 여러 해시 값이 나왔지만, `ADMIN_PASSWORD`에 맞지 않은 값들만 나오고 돌리던 코드가 종료되는 억까를 당해 대회 당시에는 풀지 못했다....     
+위 방법대로 시도했는데 위와 같이 여러 해시 값이 나왔지만, `ADMIN_PASSWORD`에 맞지 않은 값들만 나오고 돌리던 코드가 종료되는 억까를 당해 대회 당시에는 풀지 못했다...     
 
-대회가 끝나고 조금 지나고나서야 풀렸다... :(            
+대회가 끝나고 한참 지나고나서야 풀렸다 :(     
+                 
+추가적으로, 다른 분이 올려준 코드를 보니 `secret.token_hex` 값의 마지막 자리 수가 `0`으로 나오기 때문에 16씩 값을 증가하면 훨씬 더 빠르게 값을 찾을 수 있다는 것이었다... 
                
 ### Exploit Code      
 ```python
