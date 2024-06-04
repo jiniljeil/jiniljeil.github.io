@@ -645,7 +645,8 @@ Content-Type: application/octet-stream
 
 출제자분의 의도된 문제 풀이 방향은 `filename`에 `quote`를 사용하지 않고 위와 같은 방식으로 우회하는 것이었다.     
       
-> Warning: The string following filename should always be put into quotes; but, for compatibility reasons, many browsers try to parse unquoted names that contain spaces.       
+> Warning: The string following filename should always be put into quotes; but, for compatibility reasons, many browsers try to parse unquoted names that contain spaces.          
+        
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition      
         
 MDN 공식 문서에서 언급한 것과 유사하게 Quote로 파일 명을 제대로 묶어주지 않으면 
@@ -658,7 +659,7 @@ Race Condition의 확률을 높이기 위한 방법이 또 존재했는데 그�
 > As of PHP 5.0.0, this function can also be used with some URL wrappers. Refer to Supported Protocols and Wrappers to determine which wrappers support stat() family of functionality.     
               
 문제에서 사용된 PHP 함수 중에 `file_exists()` 함수는 PHP 5.0.0 버전부터 다양한 Wrapper들을 사용할 수 있게 바뀌었다.     
-
+     
 https://www.php.net/manual/en/wrappers.php 
 
 위 링크에 존재하는 wrapper들은 모두 사용이 가능하기에 `ftp://`을 사용해주면 대략 30초 정도  `pending` 상태가 되어 `unlink()` 함수가 실행되지 않고 사용자가 파일에 접근이 가능해져 문제를 해결할 수 있게 된다.                           
