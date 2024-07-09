@@ -270,8 +270,7 @@ curl \
 --form files=@/path/to/index.html \
 -o my.pdf
 ```               
-문서에 따르면, `/forms/chromium/convert/html` 경로에 index.html 파일을 올려 PDF 파일로 결과 값을 생성한다.   
-테스트 코드에 명시된 경로를 `/etc/flag.txt`로 변경하고 요청을 보내면 플래그를 획득할 수 있다.   
+문서에 따르면, `/forms/chromium/convert/html` 경로에 index.html 파일을 올려 PDF 파일로 결과 값을 생성한다. 테스트 코드에 명시된 경로를 `/etc/flag.txt`로 변경하고 요청을 보내면 플래그를 획득할 수 있다.   
      
 ### Exploit Code    
 
@@ -363,8 +362,7 @@ app.get('/admin.html', (req, res) => {
 })
 ```
      
-개인키와 공개키를 사용해 JWT 토큰을 생성하고 있다.         
-하지만, `/admin.html` 엔드포인트에서 인증을 할 때, `['HS256','RS256']` 두 알고리즘이 등록되어 있어 공개키를 알아내고 HS256 알고리즘으로 인증하면 토큰 인증을 우회할 수 있다. 즉, HS256 알고리즘을 사용할 때 공개키가 대칭키 역할을 하게 된다.     
+개인키와 공개키를 사용해 JWT 토큰을 생성하고 있다. 하지만, `/admin.html` 엔드포인트에서 인증을 할 때, `['HS256','RS256']` 두 알고리즘이 등록되어 있어 공개키를 알아내고 HS256 알고리즘으로 인증하면 토큰 인증을 우회할 수 있다. 즉, HS256 알고리즘을 사용할 때 공개키가 대칭키 역할을 하게 된다.     
                               
 ```bash
 openssl s_client -connect i-am-confusion.2024.ductf.dev:30001 2>&1 < /dev/null | sed -n '/-----BEGIN/,/-----END/p' > certificatechain.pem
