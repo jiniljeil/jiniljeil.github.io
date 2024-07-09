@@ -194,7 +194,7 @@ def get_flag():
         return "Nope"
 ```       
 
-flag 값은 전역변수로 선언되어있어 __class__.__init__.__globals__로 전역 변수에 접근이 가능하다.     
+flag 값은 전역변수로 선언되어있어 `__class__.__init__.__globals__`로 전역 변수에 접근이 가능하다.     
 즉, merge()로 `__class__.__init__.__globals__.flag` 값을 "true"로 변경해주면 된다.               
                
 ### Exploit Code    
