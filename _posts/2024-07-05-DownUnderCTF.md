@@ -180,7 +180,7 @@ def save_feedback():
     return jsonify({"success": "true"}), 200
 ```
               
-`merge()` 함수에서 Class Pollution 취약점이 존재한다.    
+`merge()` 함수에서 Prototype Pollution 취약점이 존재한다.    
        
 ```python
 import os 
@@ -406,7 +406,7 @@ DUCTF{c0nfus!ng_0nE_bUG_@t_a_tIme}
            
 59 solved / 222 pts      
        
-<a href="#co2">co2</a> 문제의 업그레이드 버전으로 병합 과정에서 Class Pollution 취약점은 동일하게 발생하고, 스크립트를 실행시켜 admin 계정의 쿠키 값을 탈취하는 문제였다.      
+<a href="#co2">co2</a> 문제의 업그레이드 버전으로 병합 과정에서 Prototype pollution 취약점은 동일하게 발생하고, 스크립트를 실행시켜 admin 계정의 쿠키 값을 탈취하는 문제였다.      
 
 ```python
 ...
@@ -578,13 +578,13 @@ def apply_csp(response):
 ```           
     
 태그 삽입이 가능하더라도 스트립트를 실행시키기 위해서는 `nonce` 값을 알아야한다.    
-`nonce` 값은 `SECRET_NONCE + data + generate_random_string(length=RANDOM_COUNT)` 구문에 의해 생성되어 랜덤한 값을 맞추긴 불가능하다. 대신, Class Pollution 취약점을 활용하면 우회가 가능해진다.          
+`nonce` 값은 `SECRET_NONCE + data + generate_random_string(length=RANDOM_COUNT)` 구문에 의해 생성되어 랜덤한 값을 맞추긴 불가능하다. 대신, Prototype pollution 취약점을 활용하면 우회가 가능해진다.          
         
 `<script>` 태그 사용 조건        
 1. TEMPLATES_ESCAPE_ALL=False => `autoescape` 값이 False로 설정되어 태그 삽입 가능
 2. SECRET_NONCE="" & RANDOM_COUNT=0 => nonce 값이 request.path에 의해 설정
 
-다시 말해, Class Pollution 취약점으로 위 조건에 맞게 값들을 설정해주면 태그 삽입이 가능해지고, `nonce` 값이 랜덤한 형태가 아닌 `request.path`에 따라 `nonce` 값이 정해지게 되어 이를 알아낼 수 있다. 즉, 스크립트 실행이 가능하다.     
+다시 말해, Prototype pollution 취약점으로 위 조건에 맞게 값들을 설정해주면 태그 삽입이 가능해지고, `nonce` 값이 랜덤한 형태가 아닌 `request.path`에 따라 `nonce` 값이 정해지게 되어 이를 알아낼 수 있다. 즉, 스크립트 실행이 가능하다.     
      
 ```python
 @app.route("/api/v1/report")
