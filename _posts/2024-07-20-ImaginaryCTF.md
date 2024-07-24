@@ -15,8 +15,8 @@ category: ctf
       
 <img src="/assets/images/ctf/2024/imaginary/scoreboard.jpg" width="700px">           
         
-
-
+오랜만에 부대원들과 함께 CTF에 참여해 문제를 풀었다. 대회 당시 웹만 풀었고 10문제 중 5문제를 풀었다. 전체적으로 난이도가 높지 않고 적당했던 것 같다.           
+           
 ## Writeup     
      
 - <a href="#readme">readme</a>     
