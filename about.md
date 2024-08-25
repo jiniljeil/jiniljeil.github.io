@@ -46,14 +46,14 @@ title: About
 <details>
     <summary>Details</summary><br>
     <ul>
-        <li>2022.03 ~ 2023.01	"Smishing Detection" Model Research & Android Application</li>
+        <li>2022.03 ~ 2023.12 "Smishing Detection" Model Research & Android Application</li>
         <li>2022.11 ~ 2022.12 Network IDS using Neural Network</li>
         <li>2022.05 ~ 2022.06 Elevator</li>
         <li>2022.04 ~ 2022.06 J-Diagram [VSCode Extension] </li>
         <li>2021.11 ~ 2021.12 Mobile Car System GUI Program (IoT) </li>
         <li>2021.08 ~ 2021.12 C/C++ Fuzzing Framework</li>
         <li>2021.05 ~ 2021.06 "Place of meeting" Android Application</li>
-        <li>2020.08 ~ 2020.9 DVWA PenTesting (Web Security)</li>
+        <li>2020.08 ~ 2020.09 DVWA PenTesting (Web Security)</li>
         <li>2020.06 ~ 2020.07 Java GUI Projects (Calculator, Image editor, Paint board, Connect6)</li>
         <li>2019.08 ~ 2019.11 "HGU Shop" Android Application</li>
     </ul>
@@ -71,18 +71,16 @@ title: About
         <li>2022.03 ~ 2022.06 데이터 구조 TA(Teaching Assistant)</li>
         <li>2022.01 GHOST GBC 보안 매니저</li>
         <li>2022.09 ~ 2022.12 C 프로그래밍 실습 TA(Teaching Assistant)</li>
-        <li>2022.09 ~ 2022.12 SW 교육 봉사 경주고</li>
-        <li>2021.07 GHOST GBC 보안 매니저</li>
+        <li>2022.09 ~ 2022.12 SW 교육 봉사 (포항유성여고)</li>
         <li>2021.07 xv6 Kernal Study 참여</li>
-        <li>2021.03 ~ 2021.06 GHOST 회장</li>
-        <li>2021.03 ~ 2021.06 GHOST 보안 프로젝트 매니저</li>
+        <li>2021.03 ~ 2021.06 GHOST 동아리 회장</li>
         <li>2021.12 ~ 2021.01 S-Lab Study 참여</li>
         <li>2020.09 ~ 2020.12 앱 프로그래밍 TA(Teaching Assistant)</li>
         <li>2020.09 ~ 2020.12 GHOST 보안 프로젝트 매니저</li>
-        <li>2020.06 ~ 2020.07 Java GUI Programming Camp 참여</li>
+        <li>2020.06 ~ 2020.07 Java GUI Programming 캠프 참여</li>
         <li>2019.12 C 프로그래밍 심화 캠프 참여</li>
         <li>2019.06 ~ 2019.08 GBC (Ghost Basic Course) 참여</li>
-        <li>2019.03 전산 동아리 GHOST </li>
+        <li>2019.03 정보보안 동아리 GHOST 가입</li>
     </ul>
 </details>
 
