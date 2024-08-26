@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Network IDS using Neural Network
-description: DDoS Attack Detection NIDS
+title: DDoS Attack Detection Network IDS
+description: DDoS Attack Detection NIDS using Neural Network
 tags: IDS ML DDoS Detection
 category: archive
 ---

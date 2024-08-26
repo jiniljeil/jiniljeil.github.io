@@ -47,7 +47,7 @@ title: About
     <summary>Details</summary><br>
     <ul>
         <li>2022.03 ~ 2023.12 "Smishing Detection" Model Research & Android Application</li>
-        <li>2022.11 ~ 2022.12 Network IDS using Neural Network</li>
+        <li>2022.11 ~ 2022.12 DDoS Attack Detection Network IDS</li>
         <li>2022.05 ~ 2022.06 Elevator</li>
         <li>2022.04 ~ 2022.06 J-Diagram [VSCode Extension] </li>
         <li>2021.11 ~ 2021.12 Mobile Car System GUI Program (IoT) </li>
