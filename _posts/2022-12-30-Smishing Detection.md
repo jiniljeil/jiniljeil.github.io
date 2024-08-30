@@ -7,7 +7,7 @@ category: archive
 ---
 
 ### Development Period
-23.03.30 ~ 23.12.30
+22.03.30 ~ 22.12.30
 
 ### Technique Stack  
 Framework: Flutter, Native, Pytorch  
