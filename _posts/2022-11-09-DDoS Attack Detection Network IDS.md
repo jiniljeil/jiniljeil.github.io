@@ -33,14 +33,13 @@ Module: [cicflowmeter](https://github.com/datthinh1801/cicflowmeter)
 
 - Neural Network Model  
     DDoS Attack Dataset로 학습 진행 후, 학습된 모델 추출 
-
     - Optimizer   
         Adam optimizer
     - Preprocessing  
         X(input) -> Normalization   
     - Model Structure   
         Dense(relu) -> Dense(sigmoid) -> Dropout(0.2) -> Dense(softmax)
-    - Training ( 7 : 3, Train Set(7) : Test Set(3) )   
+    - Training ( 8 : 2, Train Set(8) : Test Set(2) )   
         Epochs: 10, Batch_size: 10
 ### Review
 
