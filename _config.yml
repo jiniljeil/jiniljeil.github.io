@@ -35,7 +35,7 @@ dash:
       icon: file
       color: blue
     - url: /bugbounty
-      icon: world
+      icon: star
       color: yellow
     - url: /about
       icon: user
