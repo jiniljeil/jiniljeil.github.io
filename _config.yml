@@ -34,6 +34,9 @@ dash:
     - url: /archive
       icon: file
       color: blue
+    - url: /bugbounty
+      icon: world
+      color: yellow
     - url: /about
       icon: user
       color: red
@@ -70,5 +73,7 @@ nav:
     url: /archive
   - title: CTF
     url: /ctf
+  - title: BugBounty
+    url: /bugbounty
 
 theme: minima
