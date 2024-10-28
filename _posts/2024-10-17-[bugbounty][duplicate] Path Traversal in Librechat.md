@@ -1,6 +1,6 @@
 ---
 layout: post
-title: [huntr][duplicate] Path Traversal that leads to remove other files with node permission in danny-avila/librechat
+title: [BugBounty][duplicate] Path Traversal that leads to remove other files with node permission in danny-avila/librechat
 description: Path Traversal that leads to remove other files with node permission in danny-avila/librechat
 tags: huntr bugbounty path-traversal      
 category: bugbounty 
