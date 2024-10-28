@@ -86,10 +86,172 @@ console.log(path.join("/uploads/", basePath)); // OUTPUT: /app/test/hacked
 you can use the regex function to extract the last element of path or check the path if the dot includes in path.          
      
 # 📚 References      
-- ![OWASP - Path Traversal](https://owasp.org/www-community/attacks/Path_Traversal) 
-- ![PortSwigger - Path Traversal](https://portswigger.net/web-security/file-path-traversal)     
+- [OWASP - Path Traversal](https://owasp.org/www-community/attacks/Path_Traversal) 
+- [PortSwigger - Path Traversal](https://portswigger.net/web-security/file-path-traversal)     
       
 # Impact
 An attacker could perform actions not intended by application like delete arbitrary files on file system including application source code or configuration and critical system files.         
       
-      
+# Write-up    
+    
+- /api/server/index.js    
+    
+```javascript
+app.use('/api/agents', routes.agents);
+```      
+    
+- /api/server/routes/agents/v1.js
+
+```javascript
+... 
+/**
+ * Uploads and updates an avatar for a specific agent.
+ * @route POST /avatar/:agent_id
+ * @param {string} req.params.agent_id - The ID of the agent.
+ * @param {Express.Multer.File} req.file - The avatar image file.
+ * @param {string} [req.body.metadata] - Optional metadata for the agent's avatar.
+ * @returns {Object} 200 - success response - application/json
+ */
+router.post('/avatar/:agent_id', checkAgentAccess, upload.single('file'), v1.uploadAgentAvatar);
+
+module.exports = router;
+```         
+    
+- /api/server/controllers/agents/v1.js         
+        
+```javascript
+...
+
+/**
+ * Uploads and updates an avatar for a specific agent.
+ * @route POST /avatar/:agent_id
+ * @param {object} req - Express Request
+ * @param {object} req.params - Request params
+ * @param {string} req.params.agent_id - The ID of the agent.
+ * @param {Express.Multer.File} req.file - The avatar image file.
+ * @param {object} req.body - Request body
+ * @param {string} [req.body.avatar] - Optional avatar for the agent's avatar.
+ * @returns {Object} 200 - success response - application/json
+ */
+const uploadAgentAvatarHandler = async (req, res) => {
+  try {
+    const { agent_id } = req.params;
+    if (!agent_id) {
+      return res.status(400).json({ message: 'Agent ID is required' });
+    }
+
+    const image = await uploadImageBuffer({
+      req,
+      context: FileContext.avatar,
+      metadata: {
+        buffer: req.file.buffer,
+      },
+    });
+
+    let _avatar;
+    try {
+      const agent = await getAgent({ id: agent_id });
+      _avatar = agent.avatar;
+    } catch (error) {
+      logger.error('[/avatar/:agent_id] Error fetching agent', error);
+      _avatar = {};
+    }
+
+    if (_avatar && _avatar.source) {
+      const { deleteFile } = getStrategyFunctions(_avatar.source);
+      try {
+        await deleteFile(req, { filepath: _avatar.filepath });
+        await deleteFileByFilter({ user: req.user.id, filepath: _avatar.filepath });
+      } catch (error) {
+        logger.error('[/avatar/:agent_id] Error deleting old avatar', error);
+      }
+    }
+
+    const promises = [];
+
+    const data = {
+      avatar: {
+        filepath: image.filepath,
+        source: req.app.locals.fileStrategy,
+      },
+    };
+
+    promises.push(await updateAgent({ id: agent_id, author: req.user.id }, data));
+
+    const resolved = await Promise.all(promises);
+    res.status(201).json(resolved[0]);
+  } catch (error) {
+    const message = 'An error occurred while updating the Agent Avatar';
+    logger.error(message, error);
+    res.status(500).json({ message });
+  }
+};
+
+module.exports = {
+  createAgent: createAgentHandler,
+  getAgent: getAgentHandler,
+  updateAgent: updateAgentHandler,
+  deleteAgent: deleteAgentHandler,
+  getListAgents: getListAgentsHandler,
+  uploadAgentAvatar: uploadAgentAvatarHandler,
+};
+```    
+uploadAgentAvatar   
+
+- /api/server/services/Files/strategies.js     
+
+```javascript
+/**
+ * Local Server Storage Strategy Functions
+ *
+ * */
+const localStrategy = () => ({
+  /** @type {typeof uploadVectors | null} */
+  handleFileUpload: null,
+  saveURL: saveFileFromURL,
+  getFileURL: getLocalFileURL,
+  saveBuffer: saveLocalBuffer,
+  deleteFile: deleteLocalFile,
+  processAvatar: processLocalAvatar,
+  handleImageUpload: uploadLocalImage,
+  prepareImagePayload: prepareImagesLocal,
+  getDownloadStream: getLocalFileStream,
+});
+```     
+    
+- /api/server/services/Files/Local/crud.js
+        
+```javascript
+const deleteLocalFile = async (req, file) => {
+  const { publicPath, uploads } = req.app.locals.paths;
+  if (file.embedded && process.env.RAG_API_URL) {
+    const jwtToken = req.headers.authorization.split(' ')[1];
+    axios.delete(`${process.env.RAG_API_URL}/documents`, {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
+      data: [file.file_id],
+    });
+  }
+
+  if (file.filepath.startsWith(`/uploads/${req.user.id}`)) {
+    const basePath = file.filepath.split('/uploads/')[1];
+    const filepath = path.join(uploads, basePath);
+
+    await fs.promises.unlink(filepath);
+    return;
+  }
+
+  const parts = file.filepath.split(path.sep);
+  const subfolder = parts[1];
+  const filepath = path.join(publicPath, file.filepath);
+
+  if (!isValidPath(req, publicPath, subfolder, filepath)) {
+    throw new Error('Invalid file path');
+  }
+
+  await fs.promises.unlink(filepath);
+};
+```        
