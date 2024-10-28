@@ -116,7 +116,9 @@ router.post('/avatar/:agent_id', checkAgentAccess, upload.single('file'), v1.upl
 
 module.exports = router;
 ```         
-    
+          
+We can upload a single file in `/api/agents/avatar/:agent_id` path. A router maps the path into `v1.uploadAgentAvatar` method.      
+
 - /api/server/controllers/agents/v1.js         
         
 ```javascript
@@ -167,19 +169,7 @@ const uploadAgentAvatarHandler = async (req, res) => {
       }
     }
 
-    const promises = [];
-
-    const data = {
-      avatar: {
-        filepath: image.filepath,
-        source: req.app.locals.fileStrategy,
-      },
-    };
-
-    promises.push(await updateAgent({ id: agent_id, author: req.user.id }, data));
-
-    const resolved = await Promise.all(promises);
-    res.status(201).json(resolved[0]);
+    ...
   } catch (error) {
     const message = 'An error occurred while updating the Agent Avatar';
     logger.error(message, error);
@@ -195,12 +185,33 @@ module.exports = {
   getListAgents: getListAgentsHandler,
   uploadAgentAvatar: uploadAgentAvatarHandler,
 };
-```    
-uploadAgentAvatar   
-
-- /api/server/services/Files/strategies.js     
+```     
+      
+`uploadAgentAvatar` method is mapped to `uploadAgentAvatarHandler`. There is a function named `deleteFile` in the `uploadAgentAvatarHandler` method. The `deleteFile` function is decided by the parameter named `_avatar.source` , so we should see the `getStrategyFunctions` function.
+    
+- /api/server/services/Files/strategies.js
 
 ```javascript
+// Strategy Selector
+const getStrategyFunctions = (fileSource) => {
+  if (fileSource === FileSources.firebase) {
+    return firebaseStrategy();
+  } else if (fileSource === FileSources.local) {
+    return localStrategy();
+  } else if (fileSource === FileSources.openai) {
+    return openAIStrategy();
+  } else if (fileSource === FileSources.azure) {
+    return openAIStrategy();
+  } else if (fileSource === FileSources.vectordb) {
+    return vectorStrategy();
+  } else if (fileSource === FileSources.execute_code) {
+    return codeOutputStrategy();
+  } else {
+    throw new Error('Invalid file source');
+  }
+};
+...
+
 /**
  * Local Server Storage Strategy Functions
  *
@@ -217,7 +228,18 @@ const localStrategy = () => ({
   prepareImagePayload: prepareImagesLocal,
   getDownloadStream: getLocalFileStream,
 });
-```     
+```        
+    
+If `_avatar.source` value is 'local', we can call `deleteLocalFile` function in `localStrategy`. The `_avatar.source` value can be decided by user as follows.    
+
+```http
+------WebKitFormBoundaryqD8OKhALyMzAPlIU
+Content-Disposition: form-data; name="avatar"
+
+{
+    "source":"local",
+}
+```         
     
 - /api/server/services/Files/Local/crud.js
         
@@ -255,3 +277,5 @@ const deleteLocalFile = async (req, file) => {
   await fs.promises.unlink(filepath);
 };
 ```        
+     
+The vulnerability is occurred by the ```if(file.filepath.startsWith(`/uploads/${req.user.id}`))``` condition. If the user enters a `file.filepath` to `/uploads/xxxx/../../../../../../../app/test/hacked`, the value of variable named `filepath` is `/app/test/hacked`. Thus, we can get a path traversal vulnerability in this project. Done.       
