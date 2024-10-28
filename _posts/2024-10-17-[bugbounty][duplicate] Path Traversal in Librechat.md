@@ -1,12 +1,20 @@
 ---
 layout: post
-title: [Duplicate](#) Path Traversal that leads to remove other files with node permission in danny-avila/librechat
+title: (Duplicate) Path Traversal that leads to remove other files with node permission in danny-avila/librechat
 description: BugBounty Write-up
 tags: huntr bugbounty path-traversal      
 category: bugbounty 
 ---   
       
- I reported path traversal vulnerability in danny-avila/librechat to the huntr bugbounty platform. 
+I reported path traversal vulnerability in <a href="https://github.com/danny-avila/LibreChat">danny-avila/librechat</a> to the huntr bugbounty platform. I didn't receive any response from the manager for 6 days. I forwarded my report to the project manager and wanted them to patch this vulnerability, so I directly sent the email to the project manager. 
+       
+<img src="/assets/images/bugbounty/huntr/librechat/valid.png" width=700px>          
+        
+The project manager accepted my report that there was a vulnerability in the project. The maintainer has patched the project's source code.   
+     
+<img src="/assets/images/bugbounty/huntr/librechat/duplicate.png" width=700px>    
+      
+However, I unfortunately received a duplicate notification from huntr a day later. I was so embarrassed and empty when I heard the notification. Although I received duplicate notification, I thought it would be helpful in the future to document the vulnerability discovery process. Before going into detail, the contents of my report are as follows. 
   
 # 📜 Description     
     
@@ -83,3 +91,5 @@ you can use the regex function to extract the last element of path or check the 
       
 # Impact
 An attacker could perform actions not intended by application like delete arbitrary files on file system including application source code or configuration and critical system files.         
+      
+      
