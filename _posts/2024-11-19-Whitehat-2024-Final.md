@@ -673,9 +673,9 @@ $object->close();
 ```     
        
 2. Change the file extension from .phar to .jpg     
-
+         
 3. login & file upload & sql injection & php deserialization   
-
+           
 ```python
 import requests
 
