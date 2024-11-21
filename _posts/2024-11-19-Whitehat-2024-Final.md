@@ -124,7 +124,7 @@ public class UserService {
 데이터베이스 테이블에 기존 닉네임이 있는지 확인하고, 넘어온 객체를 저장하고 있다. 
 즉, 유저의 입력 값에 의해 UserEntity 객체 속성 값을 지정할 수 있어 권한을 유저가 설정할 수 있는 취약점이 발생한다.    
     
-### Exploit Code     
+## Exploit Code     
 ```python
 import requests 
 
@@ -166,7 +166,7 @@ print(r.status_code)
 print(r.text)
 ```
     
-### Flag    
+## Flag    
 whitehat2024{876d9f5f677b12a9694d244cb7482b607dd18437513f6a3f70e67f0c7c27a1ff0e95517cd221a326a8dd90ffed70bb309451}     
     
 <a id="cmsaudit"></a>                   
@@ -563,7 +563,7 @@ SET users.filepath=x WHERE users.user=x;#', content='$content' WHERE owner='$own
 ```   
 `bname` 값에 `#`을 넣음으로써 `SET title='`를 주석처리 하고, `$title`에 `\n`를 넣어 `SET users.filepath=x WHERE users.user=x;#`를 처리하도록 SQL을 조작해주면 `users` 테이블의 `filepath` 컬럼 값을 `phar:///var/www/html/uploads/xxxxxx.jpg`로 변조시킬 수 있어 역직렬화 취약점을 발생시킬 수 있게 된다.     
     
-### Exploit Code    
+## Exploit Code    
 
 SQL Injection 코드는 @ohk990102 님께서 올려주신 write-up을 참고하여 작성하였습니다.      
      
@@ -762,7 +762,7 @@ r = s.post(f'{url}/users/profileapi.php')
 print(r.text)
 ```           
      
-### Flag    
+## Flag    
 whitehat2024{6aaff0726bc7fbf8e1becf82f00138ea445b211c12b7dbc7afd53a199c0b70910ab59e0374f82a344f6832ab2cfd5f5fcca7}       
        
 <a id="ripapp"></a>                   
@@ -1010,9 +1010,9 @@ public class SendData {
         
 결론적으로, `http`를 사용하는 웹 애플리케이션 서버와 `ftp`서버를 사용해 `Out of band XXE`공격을 시도해주면 `file://`로 `Directory Listing`, `Read File`이 가능하여 플래그를 획득할 수 있다.  
     
-### Exploit Code      
+## Exploit Code      
     
-#### 1. FTP Server: https://github.com/lc/230-OOB (port: 8000)   
+### 1. FTP Server: https://github.com/lc/230-OOB (port: 8000)   
     
 ```python
 #!/usr/bin/env python3
@@ -1074,7 +1074,7 @@ except KeyboardInterrupt:
     s.close()
 ```
       
-#### 2. Web Application Server (port: 7777)         
+### 2. Web Application Server (port: 7777)         
 
 ```python
 from flask import Flask, Response
@@ -1093,7 +1093,7 @@ if __name__ == "__main__":
     app.run(host="0.0.0.0", port=7777)
 ```      
      
-#### 3. XXE Injection 
+### 3. XXE Injection 
 
 ```python
 import socket
@@ -1169,6 +1169,6 @@ else:
     print("No response or error occurred.")
 ```         
     
-### Flag    
+## Flag    
 whitehat2024{ac637d5e02f48be516ea43a43b3915a446a5d8465cf3867ed2eb4df0b6fae85d63e6bb9efcb56ee0d36771e61dfa344c0bd8}     
           
