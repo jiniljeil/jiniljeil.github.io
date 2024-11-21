@@ -354,7 +354,7 @@ if __name__ == '__main__':
        
 하지만, '(quote)를 사용하여 필터링을 우회할 수 있다.        
 
-### Exploit Code     
+## Exploit Code     
        
 `admin://'m''e''m''c''c''a''t' --servers=localhost get flag`    
         
@@ -362,7 +362,7 @@ if __name__ == '__main__':
 
 <img src="/assets/images/ctf/2024/codegate/chatting-service/flag.jpg" width="700px">                 
           
-### Flag        
+## Flag        
 codegate2024{Important_DATA_DO_NOT_SAVE_IN_MEMCACHE}                    
                 
 <!-- <a id="master_of_calculator"></a>      
@@ -371,9 +371,9 @@ codegate2024{Important_DATA_DO_NOT_SAVE_IN_MEMCACHE}
            
 71 solved / 250 pts                        
               
-### Exploit Code     
+## Exploit Code     
        
-### Flag      
+## Flag      
 codegate2024{sup3r_dup3r_ruby_trick_m4st3r} -->
            
 <a id="Cha's-Wall"></a>                 
@@ -664,7 +664,7 @@ https://www.php.net/manual/en/wrappers.php
 
 위 링크에 존재하는 wrapper들은 모두 사용이 가능하기에 `ftp://`을 사용해주면 대략 30초 정도  `pending` 상태가 되어 `unlink()` 함수가 실행되지 않고 사용자가 파일에 접근이 가능해져 문제를 해결할 수 있게 된다.                           
                   
-### Exploit Code     
+## Exploit Code     
       
 - PHP Extension Bypass 
      
@@ -692,6 +692,6 @@ if r.status_code == 200:
 ```       
 <img src="/assets/images/ctf/2024/codegate/chas-wall/flag.jpg" width="700px">         
        
-### Flag      
+## Flag      
 codegate2024{caaff9a2603c3225626f1569a0d371d7d2c354177f48bd303aa9a5297f40d55b}
                        

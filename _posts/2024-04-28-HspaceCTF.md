@@ -84,7 +84,7 @@ print(r.text)
        
 <img src="/assets/images/ctf/2024/hspace/flagreading/flag.jpg" width="700px"/>     
                
-### Flag       
+## Flag       
 hspace{catflag!!}
 
 <a id="RandomSecret"></a> 
@@ -183,5 +183,5 @@ if "Hello" in r.text:
        
 <img src="/assets/images/ctf/2024/hspace/randomsecret/flag.jpg" width="700px"/>      
                 
-### Flag      
+## Flag      
 hspace{Th3_s3cret_key_Mu5t_nOT_Be_le4KeD!!!}    

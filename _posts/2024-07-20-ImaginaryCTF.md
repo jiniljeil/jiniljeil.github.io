@@ -73,12 +73,12 @@ nginx에서 `/` 뒤에 요청하는 파일을 직접적으로 접근이 불가�
      
 <img src="/assets/images/ctf/2024/imaginary/readme/discord.jpg" width=700px>     
                
-### Exploit Code   
+## Exploit Code   
 ```bash
 curl --path-as-is 'http://readme.chal.imaginaryctf.org/flag.txt/.'
 ```                
      
-### Flag      
+## Flag      
 ictf{path_normalization_to_the_rescue}         
        
 <a id="journal"></a>          
@@ -137,13 +137,13 @@ echo "</p>";
 
 `assert()` 함수에서 PHP 코드를 실행시킬 수 있어 유저 입력으로 `'.system('').'`를 입력하면 `strpos(''.system('').'','..') === false` 구문이 되어 `system('')`을 실행한 결과가 `strpos()` 함수의 첫 번째 인자에 들어가게 된다. 명령을 입력해 플래그 값을 읽어내면 된다.            
      
-### Exploit Code    
+## Exploit Code    
 
 <img src="/assets/images/ctf/2024/imaginary/journal/ls.jpg" width=700px>            
               
 <img src="/assets/images/ctf/2024/imaginary/journal/flag.jpg" width=700px>            
                     
-### Flag      
+## Flag      
 ictf{assertion_failed_e3106922feb13b10}       
          
 <a id="crystals"></a>          
@@ -163,11 +163,11 @@ services:
 ```      
 docker-compose.yml 파일을 보면, hostname 값이 플래그로 설정되어있다. hostname 값을 알아내기 위해 `Bad Request` 요청을 보내니 플래그를 얻을 수 있었다.         
        
-### Exploit Code    
+## Exploit Code    
       
 <img src="/assets/images/ctf/2024/imaginary/crystals/flag.jpg" width=700px>          
       
-### Flag      
+## Flag      
 ictf{seems_like_you_broke_it_pretty_bad_76a87694}      
 
 <a id="The-Amazing-Race"></a>          
@@ -390,7 +390,7 @@ if not move or moveIdx is None or not canMove[moveIdx]:
       
 하지만, 여러 요청을 보내 `writeCanMove()` 함수가 호출되기 전에 새로운 요청에 대해 `writeLoc()` 함수가 처리되면 `#` (벽)을 지날 수 있게되어 도착 지점에 도달할 수 있다.          
 
-### Exploit Code     
+## Exploit Code     
                 
 새로운 UUID 값을 받을 때마다 미로가 달라진다. 그렇기 때문에 BFS 알고리즘을 사용해 도착 지점 대각선에 위치한 (33, 33)까지는 자동으로 가도록 구현했다.   
 
@@ -504,7 +504,7 @@ for (let i = 0; i < 5; i++) {
         
 <img src="/assets/images/ctf/2024/imaginary/the-amazing-race/flag.png" width="700px"/>           
                      
-### Flag
+## Flag
 ictf{turns_out_all_you_need_for_quantum_tunneling_is_to_be_f@st}             
                         
                                 
@@ -565,7 +565,7 @@ printf 'GET /.. HTTP/1.0\r\nHost: fakehost/fla\tg.txt\r\n\r\n' | nc readme2.chal
 ```        
 의도한 풀이는 `Host Header`에 `/flag.txt`를 넣고 `\t`으로 `flag` 키워드를 우회하는 것이었다. 이 방식이 우회가 가능한 이유는 `whatwg's url parsing algorithm`에서 `\t`를 무시하고 처리하기 때문이다. 
 
-### Exploit Code     
+## Exploit Code     
 
 ```php
 <?php
@@ -578,5 +578,5 @@ curl http://readme2.chal.imaginaryctf.org//server-ip
       
 <img src="/assets/images/ctf/2024/imaginary/readme2/flag.jpg" width=700px>       
       
-### Flag 
+## Flag 
 ictf{just_a_funny_bug_in_bun_http_handling}    

