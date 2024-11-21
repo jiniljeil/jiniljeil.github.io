@@ -1007,7 +1007,7 @@ public class SendData {
      
 대회가 끝나고 보니, 웹훅 사이트가 `https`로 되어있으면 딜레이로 인해 요청이 안온다고 한다...(?)      
         
-결론적으로, `http`를 사용하는 웹 애플리케이션 서버와 `ftp`서버를 사용해 `Out of band XXE`공격을 시도해주면 `Directory Listing`, `LFI`가 가능하여 플래그를 획득할 수 있다.  
+결론적으로, `http`를 사용하는 웹 애플리케이션 서버와 `ftp`서버를 사용해 `Out of band XXE`공격을 시도해주면 `file://`로 `Directory Listing`, `Read File`이 가능하여 플래그를 획득할 수 있다.  
     
 ### Exploit Code      
     
