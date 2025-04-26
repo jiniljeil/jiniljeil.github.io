@@ -13,7 +13,7 @@ title: About
 
 ## CTF
 
-> CTF Team: <a href="https://rubiyalab.team/">RubiyaLab</a>
+> <p style="color: white">CTF Team: <a href="https://rubiyalab.team/">RubiyaLab</a></p>
 
 - 2024 화이트햇 콘테스트 용사부문 7위 (Team: 문제가 EVEN하게 익지 않았어요)
 - 2024 사이버공격방어대회 공공부문 5위 (Team: 카리나보단 우정잉)
